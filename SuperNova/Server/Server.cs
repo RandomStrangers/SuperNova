@@ -231,7 +231,95 @@ namespace SuperNova {
                 return stopThread;
             }
         }
-        
+        public static Thread Update(bool restart, string msg)
+        {
+            Server.shuttingDown = true;
+            lock (stopLock)
+            {
+                if (stopThread != null) return stopThread;
+                stopThread = new Thread(() => UpdateThread(restart, msg));
+                stopThread.Start();
+                return stopThread;
+            }
+        }
+
+        static void UpdateThread(bool restarting, string msg)
+        {
+            try
+            {
+                Logger.Log(LogType.SystemActivity, "Server Updating ({0})", msg);
+            }
+            catch { }
+
+            // Stop accepting new connections and disconnect existing sessions
+            try
+            {
+                if (Listener != null) Listener.Close();
+            }
+            catch (Exception ex) { Logger.LogError(ex); }
+
+            try
+            {
+                Player[] players = PlayerInfo.Online.Items;
+                foreach (Player p in players) { p.Leave("Updating Server..."); }
+            }
+            catch (Exception ex) { Logger.LogError(ex); }
+
+            byte[] kick = Packet.Kick(msg, false);
+            try
+            {
+                INetSocket[] pending = INetSocket.pending.Items;
+                foreach (INetSocket p in pending) { p.Send(kick, SendFlags.None); }
+            }
+            catch (Exception ex) { Logger.LogError(ex); }
+
+            OnShuttingDownEvent.Call(restarting, msg);
+            Plugin.UnloadAll();
+
+            try
+            {
+                string autoload = null;
+                Level[] loaded = LevelInfo.Loaded.Items;
+                foreach (Level lvl in loaded)
+                {
+                    if (!lvl.SaveChanges) continue;
+
+                    autoload = autoload + lvl.name + "=" + lvl.physics + Environment.NewLine;
+                    lvl.Save();
+                    lvl.SaveBlockDBChanges();
+                }
+
+                if (Server.SetupFinished && !Server.Config.AutoLoadMaps)
+                {
+                    File.WriteAllText("text/autoload.txt", autoload);
+                }
+            }
+            catch (Exception ex) { Logger.LogError(ex); }
+
+            try
+            {
+                Logger.Log(LogType.SystemActivity, "Server shutdown completed");
+            }
+            catch { }
+
+            try { FileLogger.Flush(null); } catch { }
+
+            if (restarting)
+            {
+                // first try to use excevp to restart in CLI mode under mono 
+                // - see detailed comment in HACK_Execvp for why this is required
+                if (HACK_TryExecvp()) HACK_Execvp();
+                Process.Start(RestartPath);
+            }
+            Environment.Exit(0);
+        }
+
+
+
+
+
+
+
         static void ShutdownThread(bool restarting, string msg) {
             try {
                 Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);

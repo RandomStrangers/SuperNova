@@ -101,7 +101,7 @@ namespace SuperNova {
 
                 Player[] players = PlayerInfo.Online.Items;
                 foreach (Player pl in players) pl.SaveStats();
-                
+
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
                 AtomicIO.TryMove("SuperNova_.dll", "prev_SuperNova_.dll");
@@ -111,14 +111,13 @@ namespace SuperNova {
                 // Move update files to current files
                 File.Move("SuperNova_.update",   "SuperNova_.dll");
                 File.Move("SuperNova.update",    "SuperNova.exe");
-                File.Move("SuperNovaCLI.update", "SuperNovaCLI.exe");                             
-
-                Server.Stop(true, "Updating server.");
+                File.Move("SuperNovaCLI.update", "SuperNovaCLI.exe");
+                Server.Update(true, "Updating server.");
             } catch (Exception ex) {
                 Logger.LogError("Error performing update", ex);
             }
         }
-        
+
         static void DeleteFiles(params string[] paths) {
             foreach (string path in paths) { AtomicIO.TryDelete(path); }
         }

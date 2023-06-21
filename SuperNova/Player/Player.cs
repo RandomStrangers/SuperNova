@@ -105,7 +105,8 @@ namespace SuperNova {
                 BlockBindings[b] = (BlockID)b;
             }
         }
-        
+        public static List<Player> players2 = new List<Player>();
+        public static byte number { get { return (byte)players2.Count; } }
         public override byte EntityID { get { return id; } }
         public override Level Level { get { return level; } }
         public override bool RestrictsScale { get { return true; } }
