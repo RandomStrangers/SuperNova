@@ -33,13 +33,7 @@ namespace SuperNova {
         public const string UpdatesURL = "https://github.com/RandomStrangers/SuperNova/raw/master/Uploads/";
         
         const string CurrentVersionURL = BaseURL + "Uploads/current_version.txt";
-#if TEN_BIT_BLOCKS
-        const string dllURL = UpdatesURL + "SuperNova_infid.dll";
-        const string guiURL = UpdatesURL + "SuperNova.exe";
-        const string changelogURL = BaseURL + "Changelog.txt";
-        const string cliURL = UpdatesURL + "SuperNovaCLI.exe";
-
-#elif DEV_BUILD_NOVA
+#if DEV_BUILD_NOVA
         const string dllURL = UpdatesURL + "SuperNova_Core.dll";
         const string guiURL = UpdatesURL + "SuperNova_CoreGUI.exe";
         const string changelogURL = BaseURL + "Changelog.txt";
