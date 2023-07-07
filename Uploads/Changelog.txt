@@ -1,4 +1,6 @@
 ﻿SuperNova (RandomStrangers)
+ v 9.5.4.1
+Scrap changelog.txt, since I have not been updating it...
   v 9.5.3.4
  Fixed: ranking system.
  Fixed: Updater npt updating.
