@@ -44,6 +44,8 @@ namespace SuperNova {
         public bool VerifyNames = true;
         [ConfigBool("support-web-client", "Server", true)]
         public bool WebClient = true;
+        [ConfigBool("allow-ip-forwarding", "Webclient", true)]
+        public bool AllowIPForwarding = true;
         [ConfigString("default-rank", "Server", "guest")]
         public string DefaultRankName = "guest";
         

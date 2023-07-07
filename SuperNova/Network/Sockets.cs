@@ -302,7 +302,66 @@ namespace SuperNova.Network
 
         public override void Close() { s.Close(); }
     }
-    
+    /// <summary> Abstracts a WebSocket on top of a socket </summary>
+    public sealed class WebSocket2 : ServerWebSocket
+    {
+        readonly INetSocket s;
+        // websocket connection may be a proxied connection
+        IPAddress clientIP;
+
+        public WebSocket2(INetSocket socket) { s = socket; }
+
+        // Init taken care by underlying socket
+        public override void Init() { }
+        public override IPAddress IP { get { return clientIP ?? s.IP; } }
+        public override bool LowLatency { set { s.LowLatency = value; } }
+
+        public override void SendRaw(byte[] data, SendFlags flags)
+        {
+            s.Send(data, flags);
+        }
+        public override void Send(byte[] buffer, SendFlags flags)
+        {
+            s.Send(WrapData(buffer), flags);
+        }
+
+        public override void HandleData(byte[] data, int len)
+        {
+            HandleReceived(data, len);
+        }
+
+        public override void OnDisconnected(int reason)
+        {
+            if (protocol != null) protocol.Disconnect();
+            s.Close();
+        }
+
+        public override void Close() { s.Close(); }
+
+
+        // Websocket proxying support
+        public override void OnGotHeader(string name, string value)
+        {
+            base.OnGotHeader(name, value);
+
+            if (name == "X-Real-IP" && Server.Config.AllowIPForwarding && IsTrustedForwarderIP())
+            {
+                Logger.Log(LogType.SystemActivity, "{0} is forwarding a connection from {1}", IP, value);
+                IPAddress.TryParse(value, out clientIP);
+            }
+        }
+
+        // by default the following IPs are trusted for proxying/forwarding connections
+        //  1) loopback (assumed to be a reverse proxy running on the same machine as the server)
+        //  2) classicube.net's websocket proxy IP (used as a fallback for https only connections)
+        static IPAddress ccnetIP = new IPAddress(0xFA05DF22); // 34.223.5.250
+        bool IsTrustedForwarderIP()
+        {
+            IPAddress ip = IP;
+            return IPAddress.IsLoopback(ip) || ip.Equals(ccnetIP);
+        }
+    }
+}
 #if SECURE_WEBSOCKETS
 // This code is unfinished and experimental, and is terrible quality. I apologise in advance.
     public sealed class SecureSocket : INetSocket, INetProtocol {
@@ -407,4 +466,4 @@ namespace SuperNova.Network
         }
     }
 #endif
-}
+

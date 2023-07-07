@@ -36,12 +36,14 @@ namespace SuperNova {
 #if DEV_BUILD_NOVA
         const string dllURL = UpdatesURL + "SuperNova_Core.dll";
         const string guiURL = UpdatesURL + "SuperNova_CoreGUI.exe";
-        const string changelogURL = BaseURL + "Changelog.txt";
+        // const string changelogURL = BaseURL + "Changelog.txt";
+        // pointless since I don't really update the changelog...
         const string cliURL = UpdatesURL + "SuperNovaCLI_Core.exe";
 #else
         const string dllURL = UpdatesURL + "SuperNova_.dll";
         const string guiURL = UpdatesURL + "SuperNova.exe";
-        const string changelogURL = BaseURL + "Changelog.txt";
+       // const string changelogURL = BaseURL + "Changelog.txt";
+      // pointless since I don't really update the changelog...
         const string cliURL = UpdatesURL + "SuperNovaCLI.exe";
 #endif
 
@@ -84,7 +86,8 @@ namespace SuperNova {
                 client.DownloadFile(dllURL, "SuperNova_.update");
                 client.DownloadFile(guiURL, "SuperNova.update");
                 client.DownloadFile(cliURL, "SuperNovaCLI.update");
-                client.DownloadFile(changelogURL, "Changelog.txt");
+                // client.DownloadFile(changelogURL, "Changelog.txt");
+                // pointless since I don't really update the changelog...
 
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels) {
