@@ -80,7 +80,11 @@ namespace SuperNova {
             try {
                 try {
                     DeleteFiles("Changelog.txt", "SuperNova_.update", "SuperNova.update", "SuperNovaCLI.update",
-                                "prev_SuperNova_.dll", "prev_SuperNova.exe", "prev_SuperNovaCLI.exe");
+#if DEV_BUILD_NOVA
+                                                        "prev_SuperNova_Core.dll", "prev_SuperNova_CoreGUI.exe", "prev_SuperNovaCLI_Core.exe");
+#else
+                    "prev_SuperNova_.dll", "prev_SuperNova.exe", "prev_SuperNovaCLI.exe");
+#endif
                 } catch {
                 }
                 
@@ -103,9 +107,15 @@ namespace SuperNova {
 
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
+#if DEV_BUILD_NOVA
+                AtomicIO.TryMove("SuperNova_.dll", "prev_SuperNova_Core.dll");
+                AtomicIO.TryMove("SuperNova.exe", "prev_SuperNova_CoreGUI.exe");
+                AtomicIO.TryMove("SuperNovaCLI.exe", "prev_SuperNovaCLI_Core.exe");
+#else
                 AtomicIO.TryMove("SuperNova_.dll", "prev_SuperNova_.dll");
                 AtomicIO.TryMove("SuperNova.exe", "prev_SuperNova.exe");
                 AtomicIO.TryMove("SuperNovaCLI.exe", "prev_SuperNovaCLI.exe");
+#endif
                 
                 // Move update files to current files
                 File.Move("SuperNova_.update",   "SuperNova_.dll");
