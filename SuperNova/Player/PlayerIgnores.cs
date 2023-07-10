@@ -22,8 +22,8 @@ using System.IO;
 namespace SuperNova {
     
     public class PlayerIgnores {
-        public List<string> Names = new List<string>(), IRCNicks = new List<string>();
-        public bool All, IRC, Titles, Nicks, EightBall, DrawOutput, WorldChanges;
+        public List<string> Names = new List<string>(), IRCNicks = new List<string>(), IRCNicks1 = new List<string>(), IRCNicks2 = new List<string>(), GlobalIRCNicks = new List<string>();
+        public bool All, IRC, IRC1, IRC2, GlobalIRC, Titles, Nicks, EightBall, DrawOutput, WorldChanges;
         
         public void Load(Player p) {
             string path = "ranks/ignore/" + p.name + ".txt";
@@ -35,7 +35,10 @@ namespace SuperNova {
                     if (line == "&global") continue; // deprecated /ignore global
                     if (line == "&all") { All = true; continue; }
                     if (line == "&irc") { IRC = true; continue; }
-                    
+                    if (line == "&irc1") { IRC1 = true; continue; }
+                    if (line == "&irc2") { IRC2 = true; continue; }
+                    if (line == "&globalirc") { GlobalIRC = true; continue; }
+
                     if (line == "&titles") { Titles = true; continue; }
                     if (line == "&nicks") { Nicks = true; continue; }
                     
@@ -48,13 +51,37 @@ namespace SuperNova {
                     } else {
                         Names.Add(line);
                     }
+                    if (line.StartsWith("&irc1_"))
+                    {
+                        IRCNicks1.Add(line.Substring("&irc1_".Length));
+                    }
+                    else
+                    {
+                        Names.Add(line);
+                    }
+                    if (line.StartsWith("&irc2_"))
+                    {
+                        IRCNicks2.Add(line.Substring("&irc2_".Length));
+                    }
+                    else
+                    {
+                        Names.Add(line);
+                    }
+                    if (line.StartsWith("&globalirc_"))
+                    {
+                        GlobalIRCNicks.Add(line.Substring("&globalirc_".Length));
+                    }
+                    else
+                    {
+                        Names.Add(line);
+                    }
                 }
             } catch (IOException ex) {
                 Logger.LogError("Error loading ignores for " + p.name, ex);
             }
             
-            bool special = All || IRC || Titles || Nicks || EightBall || DrawOutput || WorldChanges;
-            if (special || Names.Count > 0 || IRCNicks.Count > 0) {
+            bool special = All || IRC || IRC1 || IRC2 || GlobalIRC || Titles || Nicks || EightBall || DrawOutput || WorldChanges;
+            if (special || Names.Count > 0 || IRCNicks.Count > 0 || IRCNicks1.Count >0 || IRCNicks2.Count > 0 || GlobalIRCNicks.Count > 0){
                 p.Message("&cType &a/ignore list &cto see who you are still ignoring");
             }
         }
@@ -68,7 +95,12 @@ namespace SuperNova {
                 using (StreamWriter w = new StreamWriter(path)) {
                     if (All) w.WriteLine("&all");
                     if (IRC) w.WriteLine("&irc");
-                    
+                    if (IRC1) w.WriteLine("&irc1");
+                    if (IRC2) w.WriteLine("&irc2");
+                    if (GlobalIRC) w.WriteLine("&globalirc");
+
+
+
                     if (Titles) w.WriteLine("&titles");
                     if (Nicks) w.WriteLine("&nicks");
                     
@@ -77,6 +109,12 @@ namespace SuperNova {
                     if (WorldChanges) w.WriteLine("&worldchanges");
                     
                     foreach (string nick in IRCNicks) { w.WriteLine("&irc_" + nick); }
+                    foreach (string nick in IRCNicks1) { w.WriteLine("&irc1_" + nick); }
+                    foreach (string nick in IRCNicks2) { w.WriteLine("&irc2_" + nick); }
+                    foreach (string nick in GlobalIRCNicks) { w.WriteLine("&globalirc_" + nick); }
+
+
+
                     foreach (string name in Names) { w.WriteLine(name); }
                 }
             } catch (IOException ex) {
@@ -93,10 +131,27 @@ namespace SuperNova {
                 p.Message("&cCurrently ignoring the following IRC nicks:");
                 p.Message(IRCNicks.Join());
             }
-            
+            if (IRCNicks1.Count > 0)
+            {
+                p.Message("&cCurrently ignoring the following IRC1 nicks:");
+                p.Message(IRCNicks1.Join());
+            }
+            if (IRCNicks2.Count > 0)
+            {
+                p.Message("&cCurrently ignoring the following IRC2 nicks:");
+                p.Message(IRCNicks2.Join());
+            }
+            if (GlobalIRCNicks.Count > 0)
+            {
+                p.Message("&cCurrently ignoring the following GlobalIRC nicks:");
+                p.Message(GlobalIRCNicks.Join());
+            }
+
             if (All) p.Message("&cIgnoring all chat");
             if (IRC) p.Message("&cIgnoring IRC chat");
-            
+            if (IRC1) p.Message("&cIgnoring IRC1 chat");
+            if (IRC2) p.Message("&cIgnoring IRC2 chat");
+            if (GlobalIRC) p.Message("&cIgnoring GlobalIRC chat");
             if (Titles) p.Message("&cPlayer titles do not show before names in chat");
             if (Nicks) p.Message("&cCustom player nicks do not show in chat");
             

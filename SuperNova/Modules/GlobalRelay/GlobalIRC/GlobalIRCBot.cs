@@ -18,31 +18,31 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using SuperNova.Modules.Relay2;
+using SuperNova.Modules.GlobalRelay;
 using Sharkbite.Irc;
 
-namespace SuperNova.Modules.Relay2.IRC2 
+namespace SuperNova.Modules.GlobalRelay.GlobalIRC 
 {
-    public enum IRCControllerVerify2 { None, HalfOp, OpChannel };
+    public enum GlobalIRCControllerVerify { None, HalfOp, OpChannel };
     
-    /// <summary> Manages a connection to an IRC server, and handles associated events. </summary>
-    public sealed class IRCBot2 : RelayBot2 
+    /// <summary> Manages a connection to a GlobalIRC server, and handles associated events. </summary>
+    public sealed class GlobalIRCBot: GlobalRelayBot 
     {
         internal Connection conn;
         string nick;
-        IRCNickList2 nicks;
+        GlobalIRCNickList nicks;
         bool ready;
         
-        public override string RelayName { get { return "IRC2"; } }
-        public override bool Enabled  { get { return Server.Config.UseIRC2; } }
+        public override string RelayName { get { return "GlobalChat(IRC)"; } }
+        public override bool Enabled  { get { return Server.Config.UseGlobalIRC; } }
         public override string UserID { get { return conn == null ? null : conn.Nick; } }
         
         public override void LoadControllers() {
-            Controllers = PlayerList.Load("ranks/IRC_Controllers2.txt");
+            Controllers = PlayerList.Load("ranks/GlobalIRC_Controllers.txt");
         }
         
-        public IRCBot2() {
-            nicks     = new IRCNickList2();
+        public GlobalIRCBot() {
+            nicks     = new GlobalIRCNickList();
             nicks.bot = this;
         }
         
@@ -80,20 +80,20 @@ namespace SuperNova.Modules.Relay2.IRC2
 
         public override void DoConnect() {
             ready = false;
-            nick  = Server.Config.IRCNick.Replace(" ", "");
+            nick  = Server.Config.GlobalIRCNick.Replace(" ", "");
             
             if (conn == null) conn = new Connection(new UTF8Encoding(false));
-            conn.Hostname = Server.Config.IRCServer2;
-            conn.Port     = Server.Config.IRCPort2;
-            conn.UseSSL   = Server.Config.IRCSSL2;
+            conn.Hostname = Server.Config.GlobalIRCServer;
+            conn.Port     = Server.Config.GlobalIRCPort;
+            conn.UseSSL   = Server.Config.GlobalIRCSSL;
             
             conn.Nick     = nick;
             conn.UserName = nick;
             conn.RealName = Server.SoftwareNameVersioned;
             HookIRCEvents();
             
-            bool usePass = Server.Config.IRCIdentify2 && Server.Config.IRCPassword2.Length > 0;
-            conn.ServerPassword = usePass ? Server.Config.IRCPassword2 : "*";
+            bool usePass = Server.Config.GlobalIRCIdentify && Server.Config.GlobalIRCPassword.Length > 0;
+            conn.ServerPassword = usePass ? Server.Config.GlobalIRCPassword : "*";
             conn.Connect();
         }
 
@@ -112,9 +112,9 @@ namespace SuperNova.Modules.Relay2.IRC2
         }
 
         public override void UpdateConfig() {
-            Channels     = Server.Config.IRCChannels2.SplitComma();
-            OpChannels   = Server.Config.IRCOpChannels2.SplitComma();
-            IgnoredUsers = Server.Config.IRCIgnored2.SplitComma();
+            Channels     = Server.Config.GlobalIRCChannels.SplitComma();
+            OpChannels   = Server.Config.GlobalIRCOpChannels.SplitComma();
+            IgnoredUsers = Server.Config.GlobalIRCIgnored.SplitComma();
             LoadBannedCommands();
         }
         
@@ -234,7 +234,7 @@ namespace SuperNova.Modules.Relay2.IRC2
 
         
         void OnAction(UserInfo user, string channel, string description) {
-            MessageInGame(user.Nick, string.Format("&I(IRC2) * {0} {1}", user.Nick, description));
+            MessageInGame(user.Nick, string.Format("&I(GlobalIRC) * {0} {1}", user.Nick, description));
         }
         
         void OnJoin(UserInfo user, string channel) {
@@ -251,7 +251,7 @@ namespace SuperNova.Modules.Relay2.IRC2
         void AnnounceJoinLeave(string nick, string verb, string channel) {
             Logger.Log(LogType.RelayActivity, "{0} {1} channel {2}", nick, verb, channel);
             string which = OpChannels.CaselessContains(channel) ? " operator" : "";
-            MessageInGame(nick, string.Format("&I(IRC2) {0} {1} the{2} channel", nick, verb, which));
+            MessageInGame(nick, string.Format("&I(GlobalIRC) {0} {1} the{2} channel", nick, verb, which));
         }
 
         void OnQuit(UserInfo user, string reason) {
@@ -260,23 +260,23 @@ namespace SuperNova.Modules.Relay2.IRC2
             nicks.OnLeft(user);
             
             if (user.Nick == nick) return;
-            Logger.Log(LogType.RelayActivity, user.Nick + " left IRC2");
-            MessageInGame(user.Nick, "&I(IRC2) " + user.Nick + " left");
+            Logger.Log(LogType.RelayActivity, user.Nick + " left GlobalIRC");
+            MessageInGame(user.Nick, "&I(GlobalIRC) " + user.Nick + " left");
         }
 
         void OnError(ReplyCode code, string message) {
-            Logger.Log(LogType.RelayActivity, "IRC2 Error: " + message);
+            Logger.Log(LogType.RelayActivity, "GlobalIRC Error: " + message);
         }
 
         void OnPrivate(UserInfo user, string message) {
-            RelayUser2 rUser = new RelayUser2();
+            GlobalRelayUser rUser = new GlobalRelayUser();
             rUser.ID        = user.Nick;
             rUser.Nick      = user.Nick;
             HandleDirectMessage(rUser, user.Nick, message);
         }        
 
         void OnPublic(UserInfo user, string channel, string message) {
-            RelayUser2 rUser = new RelayUser2();
+            GlobalRelayUser rUser = new GlobalRelayUser();
             rUser.ID        = user.Nick;
             rUser.Nick      = user.Nick;
             HandleChannelMessage(rUser, channel, message);
@@ -289,7 +289,7 @@ namespace SuperNova.Modules.Relay2.IRC2
         }
         
         void JoinChannels() {
-            Logger.Log(LogType.RelayActivity, "Joining IRC2 channels...");
+            Logger.Log(LogType.RelayActivity, "Joining GlobalIRC channels...");
             foreach (string chan in Channels)   { Join(chan); }
             foreach (string chan in OpChannels) { Join(chan); }
             ready = true;
@@ -301,12 +301,12 @@ namespace SuperNova.Modules.Relay2.IRC2
         }
         
         void Authenticate() {
-            string nickServ = Server.Config.IRCNickServName2;
+            string nickServ = Server.Config.GlobalIRCNickServName;
             if (nickServ.Length == 0) return;
             
-            if (Server.Config.IRCIdentify2 && Server.Config.IRCPassword2.Length > 0) {
+            if (Server.Config.GlobalIRCIdentify && Server.Config.GlobalIRCPassword.Length > 0) {
                 Logger.Log(LogType.RelayActivity, "Identifying with " + nickServ);
-                conn.SendMessage(nickServ, "IDENTIFY " + Server.Config.IRCPassword2);
+                conn.SendMessage(nickServ, "IDENTIFY " + Server.Config.GlobalIRCPassword);
             }
         }
 
@@ -316,7 +316,7 @@ namespace SuperNova.Modules.Relay2.IRC2
             if (newNick.Trim().Length == 0) return;
             
             nicks.OnChangedNick(user, newNick);
-            MessageInGame(user.Nick, "&I(IRC2) " + user.Nick + " &Sis now known as &I" + newNick);
+            MessageInGame(user.Nick, "&I(GlobalIRC) " + user.Nick + " &Sis now known as &I" + newNick);
         }
         
         void OnNames(string channel, string[] _nicks, bool last) {
@@ -331,8 +331,8 @@ namespace SuperNova.Modules.Relay2.IRC2
             nicks.OnLeftChannel(user, channel);
             
             if (reason.Length > 0) reason = " (" + reason + ")";
-            Logger.Log(LogType.RelayActivity, "{0} kicked {1} from IRC2{2}", user.Nick, kickee, reason);
-            MessageInGame(user.Nick, "&I(IRC2) " + user.Nick + " kicked " + kickee + reason);
+            Logger.Log(LogType.RelayActivity, "{0} kicked {1} from GlobalIRC{2}", user.Nick, kickee, reason);
+            MessageInGame(user.Nick, "&I(GlobalIRC) " + user.Nick + " kicked " + kickee + reason);
         }
         
         void OnKill(UserInfo user, string nick, string reason) {

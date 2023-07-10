@@ -162,6 +162,7 @@ namespace SuperNova {
             EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
             EnsureDirectoryExists("text/discord1"); // TODO move to discord plugin1
             EnsureDirectoryExists("text/discord2"); // TODO move to discord plugin2
+            EnsureDirectoryExists("globalchat/"); // TODO move to globalchat plugins
         }
         
         static void EnsureDirectoryExists(string dir) {

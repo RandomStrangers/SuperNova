@@ -156,6 +156,14 @@ namespace SuperNova {
             w.WriteLine("#   max-guests                    = The maximum number of guests allowed");
             w.WriteLine("#   max-maps                      = The maximum number of maps loaded at once");
             w.WriteLine("#   world-chat                    = Set to true to enable world chat");
+            w.WriteLine("#   global-irc                    = Set to true to enable the GlobalIRC bot");
+            w.WriteLine("#   global-irc-nick               = The name of the GlobalIRC bot");
+            w.WriteLine("#   global-irc-server             = The server to connect to");
+            w.WriteLine("#   global-irc-channel            = The channel to join");
+            w.WriteLine("#   global-irc-opchannel          = The channel to join (posts OpChat)");
+            w.WriteLine("#   global-irc-port               = The port to use to connect");
+            w.WriteLine("#   global-irc-identify           = (true/false)    Do you want the GlobalIRC bot to Identify itself with nickserv. Note: You will need to register it's name with nickserv manually.");
+            w.WriteLine("#   global-irc-password           = The password you want to use if you're identifying with nickserv");
             w.WriteLine("#   irc                           = Set to true to enable the IRC bot");
             w.WriteLine("#   irc-nick                      = The name of the IRC bot");
             w.WriteLine("#   irc-server                    = The server to connect to");

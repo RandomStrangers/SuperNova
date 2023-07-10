@@ -26,15 +26,15 @@ using SuperNova.DB;
 using SuperNova.Events;
 using SuperNova.Events.ServerEvents;
 
-namespace SuperNova.Modules.Relay2 
+namespace SuperNova.Modules.GlobalRelay 
 {
-    public class RelayUser2 { public string ID, Nick; }
+    public class GlobalRelayUser { public string ID, Nick; }
 
-    public delegate void OnDirectMessage(RelayBot2 bot, string channel, RelayUser2 user, string message, ref bool cancel);
+    public delegate void OnDirectMessage(GlobalRelayBot bot, string channel, GlobalRelayUser user, string message, ref bool cancel);
     /// <summary> Called when an external communication service user sends a message directly to the relay bot </summary>
     public sealed class OnDirectMessageEvent : IEvent<OnDirectMessage> 
     {
-        public static void Call(RelayBot2 bot, string channel, RelayUser2 user, string message, ref bool cancel) {
+        public static void Call(GlobalRelayBot bot, string channel, GlobalRelayUser user, string message, ref bool cancel) {
             IEvent<OnDirectMessage>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++) {
                 try {
@@ -46,11 +46,11 @@ namespace SuperNova.Modules.Relay2
         }
     }
     
-    public delegate void OnChannelMessage(RelayBot2 bot, string channel, RelayUser2 user, string message, ref bool cancel);
+    public delegate void OnChannelMessage(GlobalRelayBot bot, string channel, GlobalRelayUser user, string message, ref bool cancel);
     /// <summary> Called when an external communication service user sends a message to the given channel </summary>
     public sealed class OnChannelMessageEvent : IEvent<OnChannelMessage> 
     { 
-        public static void Call(RelayBot2 bot, string channel, RelayUser2 user, string message, ref bool cancel) {
+        public static void Call(GlobalRelayBot bot, string channel, GlobalRelayUser user, string message, ref bool cancel) {
             IEvent<OnChannelMessage>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++) {
                 try {
@@ -63,7 +63,7 @@ namespace SuperNova.Modules.Relay2
     }
     
     /// <summary> Manages a connection to an external communication service </summary>
-    public abstract class RelayBot2 
+    public abstract class GlobalRelayBot 
     {
         /// <summary> List of commands that cannot be used by relay bot controllers. </summary>
         public List<string> BannedCommands;
@@ -77,8 +77,8 @@ namespace SuperNova.Modules.Relay2
         /// <summary> List of user IDs that all chat from is ignored </summary>
         public string[] IgnoredUsers;
         
-        readonly Player fakeGuest = new Player("RelayBot2");
-        readonly Player fakeStaff = new Player("RelayBot2");
+        readonly Player fakeGuest = new Player("GlobalRelayBot");
+        readonly Player fakeStaff = new Player("GlobalRelayBot");
         DateTime lastWho, lastOpWho;
 
         public bool canReconnect;
@@ -254,15 +254,15 @@ namespace SuperNova.Modules.Relay2
         public abstract void UpdateConfig();
 
         public void LoadBannedCommands() {
-            BannedCommands = new List<string>() { "IRCBot2", "DiscordBot2", "OpRules", "IRCControllers2", "DiscordControllers2" };
+            BannedCommands = new List<string>() { "GlobalIRCBot", "GlobalDiscordBot", "OpRules", "GlobalIRCControllers", "GlobalDiscordControllers" };
             
-            if (!File.Exists("text/irccmdblacklist2.txt")) {
-                File.WriteAllLines("text/irccmdblacklist2.txt", new string[] {
-                                       "# Here you can put commands that cannot be used from the IRC bot.",
+            if (!File.Exists("text/globalirccmdblacklist.txt")) {
+                File.WriteAllLines("text/globalirccmdblacklist.txt", new string[] {
+                                       "# Here you can put commands that cannot be used from the GlobalIRC bot.",
                                        "# Lines starting with \"#\" are ignored." });
             }
             
-            foreach (string line in File.ReadAllLines("text/irccmdblacklist2.txt")) {
+            foreach (string line in File.ReadAllLines("text/globalirccmdblacklist.txt")) {
                 if (!line.IsCommentLine()) BannedCommands.Add(line);
             }
         }
@@ -283,12 +283,12 @@ namespace SuperNova.Modules.Relay2
         }
         
         
-        static bool FilterIRC2(Player pl, object arg) {
-            return !pl.Ignores.IRC2 && !pl.Ignores.IRCNicks2.Contains((string)arg);
-        } static ChatMessageFilter filterIRC2 = FilterIRC2;
+        static bool FilterGlobalIRC(Player pl, object arg) {
+            return !pl.Ignores.GlobalIRC && !pl.Ignores.GlobalIRCNicks.Contains((string)arg);
+        } static ChatMessageFilter filterGlobalIRC = FilterGlobalIRC;
         
         public static void MessageInGame(string srcNick, string message) {
-            Chat.Message(ChatScope.Global, message, srcNick, filterIRC2);
+            Chat.Message(ChatScope.Global, message, srcNick, filterGlobalIRC);
         }
         
         string Unescape(Player p, string msg) {
@@ -298,7 +298,7 @@ namespace SuperNova.Modules.Relay2
         }
 
         public virtual string UnescapeFull(Player p) {
-            return Server.Config.IRCShowPlayerTitles2 ? p.FullName : p.group.Prefix + p.ColoredName;
+            return Server.Config.GlobalIRCShowPlayerTitles ? p.FullName : p.group.Prefix + p.ColoredName;
         }
 
         public virtual string UnescapeNick(Player p) { return p.ColoredName; }
@@ -313,7 +313,7 @@ namespace SuperNova.Modules.Relay2
                 SendPublicMessage(msg); return;
             }
             
-            fakeStaff.group = Group.Find(Server.Config.IRCControllerRank2);
+            fakeStaff.group = Group.Find(Server.Config.GlobalIRCControllerRank);
             if (fakeStaff.group == null) fakeStaff.group = Group.NobodyRank;
             
             if (scopeFilter(fakeStaff, arg) && (filter == null || filter(fakeStaff, arg))) {
@@ -361,7 +361,7 @@ namespace SuperNova.Modules.Relay2
         public abstract string ParseMessage(string message);
 
         /// <summary> Handles a direct message written by the given user </summary>
-        public void HandleDirectMessage(RelayUser2 user, string channel, string message) {
+        public void HandleDirectMessage(GlobalRelayUser user, string channel, string message) {
             if (IgnoredUsers.CaselessContains(user.ID)) return;
             message = ParseMessage(message).TrimEnd();
             if (message.Length == 0) return;
@@ -387,7 +387,7 @@ namespace SuperNova.Modules.Relay2
         }
 
         /// <summary> Handles a message written by the given user on the given channel </summary>
-        public void HandleChannelMessage(RelayUser2 user, string channel, string message) {
+        public void HandleChannelMessage(GlobalRelayUser user, string channel, string message) {
             if (IgnoredUsers.CaselessContains(user.ID)) return;
             message = ParseMessage(message).TrimEnd();
             if (message.Length == 0) return;
@@ -404,7 +404,7 @@ namespace SuperNova.Modules.Relay2
             // Only reply to .who on channels configured to listen on
             if ((chat || opchat) && HandleListPlayers(user, channel, rawCmd, opchat)) return;
             
-            if (rawCmd.CaselessEq(Server.Config.IRCCommandPrefix)) {
+            if (rawCmd.CaselessEq(Server.Config.GlobalIRCCommandPrefix)) {
                 if (!HandleCommand(user, channel, message, parts)) return;
             }
 
@@ -419,13 +419,13 @@ namespace SuperNova.Modules.Relay2
             }
         }
         
-        bool HandleListPlayers(RelayUser2 user, string channel, string cmd, bool opchat) {
+        bool HandleListPlayers(GlobalRelayUser user, string channel, string cmd, bool opchat) {
             bool isWho    = cmd == ".who" || cmd == ".players" || cmd == "!players";
             DateTime last = opchat ? lastOpWho : lastWho;
             if (!isWho || (DateTime.UtcNow - last).TotalSeconds <= 5) return false;
             
             try {
-                RelayPlayer2 p = new RelayPlayer2(channel, user, this);
+                GlobalRelayPlayer p = new GlobalRelayPlayer(channel, user, this);
                 p.group = Group.DefaultRank;
                 MessagePlayers(p);
             } catch (Exception e) {
@@ -438,12 +438,12 @@ namespace SuperNova.Modules.Relay2
         }
 
         /// <summary> Outputs the list of online players to the given user </summary>
-        public virtual void MessagePlayers(RelayPlayer2 p) {
+        public virtual void MessagePlayers(GlobalRelayPlayer p) {
             Command.Find("Players").Use(p, "", p.DefaultCmdData);
         }
         
                 
-        bool HandleCommand(RelayUser2 user, string channel, string message, string[] parts) {
+        bool HandleCommand(GlobalRelayUser user, string channel, string message, string[] parts) {
             string cmdName = parts.Length > 1 ? parts[1].ToLower() : "";
             string cmdArgs = parts.Length > 2 ? parts[2] : "";
             Command.Search(ref cmdName, ref cmdArgs);
@@ -457,9 +457,9 @@ namespace SuperNova.Modules.Relay2
             return ExecuteCommand(user, channel, cmdName, cmdArgs);
         }
         
-        bool ExecuteCommand(RelayUser2 user, string channel, string cmdName, string cmdArgs) {
+        bool ExecuteCommand(GlobalRelayUser user, string channel, string cmdName, string cmdArgs) {
             Command cmd = Command.Find(cmdName);
-            Player p = new RelayPlayer2(channel, user, this);
+            Player p = new GlobalRelayPlayer(channel, user, this);
             if (cmd == null) { p.Message("Unknown command \"{0}\"", cmdName); return false; }
 
             string logCmd = cmdArgs.Length == 0 ? cmdName : cmdName + " " + cmdArgs;
@@ -483,7 +483,7 @@ namespace SuperNova.Modules.Relay2
         }
 
         /// <summary> Returns whether the given relay user is allowed to execute the given command </summary>
-        public bool CanUseCommand(RelayUser2 user, string cmd, out string error) {
+        public bool CanUseCommand(GlobalRelayUser user, string cmd, out string error) {
             error = null;
             // Intentionally show no message to non-controller users to avoid spam
             if (!Controllers.Contains(user.ID)) return false;
@@ -501,13 +501,13 @@ namespace SuperNova.Modules.Relay2
         /// <remarks> e.g. a user may have to login before they are allowed to execute commands </remarks>
         public abstract bool CheckController(string userID, ref string error);
 
-        public sealed class RelayPlayer2 : Player {
+        public sealed class GlobalRelayPlayer : Player {
             public readonly string ChannelID;
-            public readonly RelayUser2 User;
-            public readonly RelayBot2 Bot;
+            public readonly GlobalRelayUser User;
+            public readonly GlobalRelayBot Bot;
             
-            public RelayPlayer2(string channel, RelayUser2 user, RelayBot2 bot) : base(bot.RelayName) {
-                group = Group.Find(Server.Config.IRCControllerRank2);
+            public GlobalRelayPlayer(string channel, GlobalRelayUser user, GlobalRelayBot bot) : base(bot.RelayName) {
+                group = Group.Find(Server.Config.GlobalIRCControllerRank);
                 if (group == null) group = Group.NobodyRank;
                 
                 ChannelID = channel;

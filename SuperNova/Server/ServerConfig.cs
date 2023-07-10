@@ -22,6 +22,7 @@ using SuperNova.Config;
 using SuperNova.Modules.Relay.IRC;
 using SuperNova.Modules.Relay1.IRC1;
 using SuperNova.Modules.Relay2.IRC2;
+using SuperNova.Modules.GlobalRelay.GlobalIRC;
 
 namespace SuperNova {
     public sealed class ServerConfig : EnvConfig {
@@ -179,7 +180,7 @@ namespace SuperNova {
 
         [ConfigBool("irc1", "IRC bot1", false)]
         public bool UseIRC1 = false;
-        [ConfigInt("irc-port", "IRC bot", 6667, 0, 65535)]
+        [ConfigInt("irc-port", "IRC bot1", 6667, 0, 65535)]
         public int IRCPort1 = 6667;
         [ConfigString("irc-server1", "IRC bot1", "irc.esper.net")]
         public string IRCServer1 = "irc.esper.net";
@@ -210,7 +211,7 @@ namespace SuperNova {
         public string IRCNick2 = "ForgeBot2";
         [ConfigString("irc-channel2", "IRC bot2", "#changethis2", true)]
         public string IRCChannels2 = "#changethis2";
-        [ConfigString("irc-opchannel2", "IRC bot1", "#changethistoo2", true)]
+        [ConfigString("irc-opchannel2", "IRC bot2", "#changethistoo2", true)]
         public string IRCOpChannels2 = "#changethistoo2";
         [ConfigBool("irc-identify2", "IRC bot2", false)]
         public bool IRCIdentify2 = false;
@@ -222,6 +223,44 @@ namespace SuperNova {
         public bool IRCSSL2 = false;
         [ConfigString("irc-ignored-nicks2", "IRC bot2", "", true)]
         public string IRCIgnored2 = "";
+
+
+        [ConfigBool("global-irc", "GlobalIRC", false)]
+        public bool UseGlobalIRC = false;
+        [ConfigInt("global-irc-port", "GlobalIRC", 6667, 0, 65535)]
+        public int GlobalIRCPort = 6667;
+        [ConfigString("global-irc-server", "GlobalIRC", "irc.esper.net")]
+        public string GlobalIRCServer = "irc.esper.net";
+        [ConfigString("global-irc-nick", "GlobalIRC", "GlobalIRC")]
+        public string GlobalIRCNick = "GlobalChat";
+        [ConfigString("global-irc-channel", "GlobalIRC", "#changethis", true)]
+        public string GlobalIRCChannels = "#changethis";
+        [ConfigString("global-irc-opchannel", "GlobalIRC", "#changethistoo", true)]
+        public string GlobalIRCOpChannels = "#changethistoo";
+        [ConfigBool("global-irc-identify", "GlobalIRC", false)]
+        public bool GlobalIRCIdentify = false;
+        [ConfigString("global-irc-nickserv-name", "GlobalIRC", "NickServ", true)]
+        public string GlobalIRCNickServName = "NickServ";
+        [ConfigString("global-irc-password", "GlobalIRC", "", true)]
+        public string GlobalIRCPassword = "";
+        [ConfigBool("global-irc-ssl", "GlobalIRC", false)]
+        public bool GlobalIRCSSL = false;
+        [ConfigString("global-irc-ignored-nicks", "GlobalIRC", "", true)]
+        public string GlobalIRCIgnored = "";
+
+        [ConfigBool("global-irc-player-titles", "GlobalIRC", true)]
+        public bool GlobalIRCShowPlayerTitles = true;
+        [ConfigBool("global-irc-show-world-changes", "GlobalIRC", false)]
+        public bool GlobalIRCShowWorldChanges = false;
+        [ConfigBool("global-irc-show-afk", "GlobalIRC", false)]
+        public bool GlobalIRCShowAFK = false;
+        [ConfigString("global-irc-command-prefix", "GlobalIRC", ".g", true)]
+        public string GlobalIRCCommandPrefix = ".g";
+        [ConfigEnum("global-irc-controller-verify", "GlobalIRC", GlobalIRCControllerVerify.HalfOp, typeof(GlobalIRCControllerVerify))]
+        public GlobalIRCControllerVerify GlobalIRCVerify = GlobalIRCControllerVerify.HalfOp;
+        [ConfigPerm("global-irc-controller-rank", "GlobalIRC", LevelPermission.Admin)]
+        public LevelPermission GlobalIRCControllerRank = LevelPermission.Admin;
+
 
         [ConfigBool("UseMySQL", "Database", false)]
         public bool UseMySQL = false;
