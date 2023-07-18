@@ -35,6 +35,7 @@ using SuperNova.Scripting;
 using SuperNova.Tasks;
 using SuperNova.Util;
 using SuperNova.Modules.Awards;
+using System.Reflection;
 
 namespace SuperNova {
     public sealed partial class Server {
@@ -157,8 +158,8 @@ namespace SuperNova {
             EnsureDirectoryExists("extra/bots");
             EnsureDirectoryExists(Paths.ImportsDir);
             EnsureDirectoryExists("blockdefs");
-            EnsureDirectoryExists(IScripting.DllDir);
-            EnsureDirectoryExists(ICompiler.SourceDir);
+            EnsureDirectoryExists(IScripting.COMMANDS_DLL_DIR);
+            EnsureDirectoryExists(Modules.Compiling.ICompiler.COMMANDS_SOURCE_DIR); // TODO move to compiling module
             EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
             EnsureDirectoryExists("text/discord1"); // TODO move to discord plugin1
             EnsureDirectoryExists("text/discord2"); // TODO move to discord plugin2
@@ -383,7 +384,10 @@ namespace SuperNova {
             return CLIMode && Environment.OSVersion.Platform == PlatformID.Unix 
                 && RunningOnMono();
         }
-        
+        public static string GetServerDLLPath()
+        {
+            return Assembly.GetExecutingAssembly().Location;
+        }
         static void HACK_Execvp() {
             // With using normal Process.Start with mono, after Environment.Exit
             //  is called, all FDs (including standard input) are also closed.

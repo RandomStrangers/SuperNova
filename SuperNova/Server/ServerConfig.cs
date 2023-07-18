@@ -22,7 +22,7 @@ using SuperNova.Config;
 using SuperNova.Modules.Relay.IRC;
 using SuperNova.Modules.Relay1.IRC1;
 using SuperNova.Modules.Relay2.IRC2;
-using SuperNova.Modules.GlobalRelay.GlobalIRC;
+using SuperNova.Modules.Relay3.IRC3;
 
 namespace SuperNova {
     public sealed class ServerConfig : EnvConfig {
@@ -256,8 +256,8 @@ namespace SuperNova {
         public bool GlobalIRCShowAFK = false;
         [ConfigString("global-irc-command-prefix", "GlobalIRC", ".g", true)]
         public string GlobalIRCCommandPrefix = ".g";
-        [ConfigEnum("global-irc-controller-verify", "GlobalIRC", GlobalIRCControllerVerify.HalfOp, typeof(GlobalIRCControllerVerify))]
-        public GlobalIRCControllerVerify GlobalIRCVerify = GlobalIRCControllerVerify.HalfOp;
+        [ConfigEnum("global-irc-controller-verify", "GlobalIRC", IRCControllerVerify3.HalfOp, typeof(IRCControllerVerify3))]
+        public IRCControllerVerify3 GlobalIRCVerify = IRCControllerVerify3.HalfOp;
         [ConfigPerm("global-irc-controller-rank", "GlobalIRC", LevelPermission.Admin)]
         public LevelPermission GlobalIRCControllerRank = LevelPermission.Admin;
 

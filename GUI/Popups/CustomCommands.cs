@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using SuperNova.Modules.Compiling;
 using SuperNova.Scripting;
 
 namespace SuperNova.Gui.Popups {
@@ -59,8 +60,6 @@ namespace SuperNova.Gui.Popups {
             Popup.Message("Command Cmd" + cmdName + engine.FileExtension + " created.");
         }
         
-        void btnCreateCS_Click(object sender, EventArgs e) { CreateCommand(ICompiler.CS); }
-        void btnCreateVB_Click(object sender, EventArgs e) { CreateCommand(ICompiler.VB); }
         
         void btnLoad_Click(object sender, EventArgs e) {
             Assembly lib;
@@ -120,8 +119,7 @@ namespace SuperNova.Gui.Popups {
 #else
             ConsoleHelpPlayer p    = new ConsoleHelpPlayer();
 #endif
-            CompilerResults result = ScriptingOperations.Compile(p, compiler, "Command", new[] { path }, null);
-            if (result != null) return result.CompiledAssembly;
+            CompilerResults result = CompilerOperations.Compile(p, compiler, "Command", new[] { path }, null); if (result != null) return result.CompiledAssembly;
             
             Popup.Error(Colors.StripUsed(p.Messages));
             return null;

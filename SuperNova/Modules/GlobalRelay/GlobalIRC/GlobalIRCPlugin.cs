@@ -47,7 +47,7 @@ namespace SuperNova.Modules.GlobalRelay.GlobalIRC
     {
         public override string name { get { return "GlobalIRCBot"; } }
         public override CommandAlias[] Aliases {
-            get { return new[] { new CommandAlias("ResetBot3", "reset3"), new CommandAlias("ResetIRC3", "reset3"), new CommandAlias("ResetGlobalBot", "resetglobal"), new CommandAlias("ResetGlobalIRC", "resetIRCGlobal") }; }
+            get { return new[] { new CommandAlias("ResetBot3", "reset3"), new CommandAlias("ResetIRC3", "reset3")}; }
         }
         public override GlobalRelayBot Bot { get { return GlobalIRCPlugin.Bot; } }
     }

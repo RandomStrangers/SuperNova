@@ -44,7 +44,7 @@ namespace SuperNova {
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
         
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.5.4.2";
+        public const string InternalVersion = "9.5.4.3";
         public static string Version { get { return InternalVersion; } }
 #if DEV_BUILD_NOVA
         public static string SoftwareName = "SuperNova Core";
@@ -71,7 +71,7 @@ namespace SuperNova {
         public static PlayerExtList models, skins, reach, rotations, modelScales;
         public static PlayerExtList frozen, muted, tempBans, tempRanks;
         
-        public static readonly List<string> Devs = new List<string>() { "Hetal", "UclCommander" };
+        public static readonly List<string> Devs = new List<string>() { "Hetal", "UclCommander", "SuperNova", "sethbatman05" };
         public static readonly List<string> Opstats = new List<string>() { "ban", "tempban", "xban", "banip", "kick", "warn", "mute", "freeze", "setrank" };
 
         public static Level mainLevel;
@@ -87,7 +87,7 @@ namespace SuperNova {
         
         public static int YesVotes, NoVotes;
         public static bool voting;
-        public const int MAX_PLAYERS = 256;
+        public const int MAX_PLAYERS = 1024;
         
         public static Scheduler MainScheduler = new Scheduler("SN_MainScheduler");
         public static Scheduler Background = new Scheduler("SN_BackgroundScheduler");

@@ -33,7 +33,7 @@ namespace SuperNova.Modules.GlobalRelay.GlobalIRC
         GlobalIRCNickList nicks;
         bool ready;
         
-        public override string RelayName { get { return "GlobalChat(IRC)"; } }
+        public override string RelayName { get { return "GlobalIRC"; } }
         public override bool Enabled  { get { return Server.Config.UseGlobalIRC; } }
         public override string UserID { get { return conn == null ? null : conn.Nick; } }
         
