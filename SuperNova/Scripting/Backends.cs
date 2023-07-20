@@ -29,17 +29,17 @@ namespace SuperNova.Scripting
     {
         public override string FileExtension { get { return ".cs"; } }
         public override string ShortName     { get { return "CS"; } }  
-        public override string FullName      { get { return "CSharp"; } }
+        public override string FullName      { get { return "CSharp"; } }        
 
-        public override CodeDomProvider CreateProvider() {
+        protected override CodeDomProvider CreateProvider() {
 #if NETSTANDARD
             return new CSharpCodeProvider();
 #else
             return CodeDomProvider.CreateProvider("CSharp");
 #endif
         }
-
-        public override void PrepareArgs(CompilerParameters args) {
+        
+        protected override void PrepareArgs(CompilerParameters args) {
             args.CompilerOptions += " /unsafe";
         }
         
@@ -48,7 +48,7 @@ namespace SuperNova.Scripting
                 return @"//\tAuto-generated command skeleton class.
 //\tUse this as a basis for custom SuperNova commands.
 //\tNaming should be kept consistent. (e.g. /update command should have a class name of 'CmdUpdate' and a filename of 'CmdUpdate.cs')
-// As a note, SuperNova is designed for .NET 4.8
+// As a note, SuperNova is designed for .NET 4.0
 
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
 //   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
@@ -133,24 +133,24 @@ namespace SuperNova
         public override string FileExtension { get { return ".vb"; } }
         public override string ShortName     { get { return "VB"; } }
         public override string FullName      { get { return "Visual Basic"; } }
-
-        public override CodeDomProvider CreateProvider() {
+        
+        protected override CodeDomProvider CreateProvider() {
 #if NETSTANDARD
             return new VBCodeProvider();
 #else
             return CodeDomProvider.CreateProvider("VisualBasic");
 #endif
         }
-
-        public override void PrepareArgs(CompilerParameters args) { }
-        public override string CommentPrefix { get { return "'"; } }
+        
+        protected override void PrepareArgs(CompilerParameters args) { }
+        protected override string CommentPrefix { get { return "'"; } }
         
         public override string CommandSkeleton {
             get {
                 return @"'\tAuto-generated command skeleton class.
 '\tUse this as a basis for custom SuperNova commands.
 '\tNaming should be kept consistent. (e.g. /update command should have a class name of 'CmdUpdate' and a filename of 'CmdUpdate.vb')
-' As a note, SuperNova is designed for .NET 4.8.
+' As a note, SuperNova is designed for .NET 4.0.
 
 ' To reference other assemblies, put a ""'reference [assembly filename]"" at the top of the file
 '   e.g. to reference the System.Data assembly, put ""'reference System.Data.dll""

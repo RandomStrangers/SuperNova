@@ -17,44 +17,75 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Text;
 
-namespace SuperNova.Scripting
-{
-    public static class ScriptingOperations
-    {
-        public static bool LoadCommands(Player p, string path)
-        {
-            string error;
-            List<Command> cmds = IScripting.LoadCommands(path, out error);
-
-            if (error != null)
+namespace SuperNova.Scripting 
+{    
+    public static class ScriptingOperations 
+    {   
+        public static ICompiler GetCompiler(Player p, string name) {
+            if (name.Length == 0) return ICompiler.Compilers[0];
+            
+            foreach (ICompiler comp in ICompiler.Compilers) 
             {
-                p.Message(error);
-                return false;
+                if (comp.ShortName.CaselessEq(name)) return comp;
             }
-
-            p.Message("Successfully loaded &T{0}", cmds.Join(c => "/" + c.name));
-            return true;
+            
+            p.Message("&WUnknown language \"{0}\"", name);
+            p.Message("&HAvailable languages: &f{0}",
+                      ICompiler.Compilers.Join(c => c.ShortName + " (" + c.FullName + ")"));
+            return null;
         }
 
-        public static bool LoadPlugins(Player p, string path)
-        {
-            if (!File.Exists(path))
+
+        const int MAX_LOG = 2;
+    	
+        /// <summary> Attempts to compile the given source code files into a .dll </summary>
+        /// <param name="p"> Player to send messages to </param>
+        /// <param name="type"> Type of files being compiled (e.g. Plugin, Command) </param>
+        /// <param name="srcs"> Path of the source code files </param>
+        /// <param name="dst"> Path to the destination .dll </param>
+        /// <returns> The compiler results, or null if compilation failed </returns>
+        /// <remarks> If dstPath is null, compiles to an in-memory .dll instead. </remarks>
+        public static CompilerResults Compile(Player p, ICompiler compiler, string type, string[] srcs, string dst) {
+            foreach (string path in srcs) 
             {
+                if (File.Exists(path)) continue;
+                
                 p.Message("File &9{0} &Snot found.", path);
-                return false;
+                return null;
             }
-
-            if (!IScripting.LoadPlugin(path, false))
+            
+            CompilerResults results = compiler.Compile(srcs, dst);
+            if (!results.Errors.HasErrors) {
+                p.Message("{0} compiled successfully from {1}", 
+                        type, srcs.Join(file => Path.GetFileName(file)));
+                return results;
+            }
+            
+            SummariseErrors(results, srcs, p);
+            return null;
+        }
+        
+        static void SummariseErrors(CompilerResults results, string[] srcs, Player p) {
+            int logged = 0;
+            foreach (CompilerError err in results.Errors) 
             {
-                p.Message("&WError loading plugin. See error logs for more information.");
-                return false;
+                p.Message("&W{1} - {0}", err.ErrorText,
+                          ICompiler.DescribeError(err, srcs, " #" + err.ErrorNumber));
+                logged++;
+                if (logged >= MAX_LOG) break;
             }
-
-            p.Message("Plugin loaded successfully.");
-            return true;
+            
+            if (results.Errors.Count > MAX_LOG) {
+                p.Message(" &W.. and {0} more", results.Errors.Count - MAX_LOG);
+            }
+            p.Message("&WCompilation error. See " + ICompiler.ErrorPath + " for more information.");
         }
     }
 }

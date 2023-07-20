@@ -45,6 +45,8 @@ namespace SuperNova {
         
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = "9.5.4.4";
+        public const string TrueInternalVersion = "1.0.1.4"; //True version of the software, since it started at 8.7.1.9.
+        //Might finally convert the old numbering system to the proper one.
         public static string Version { get { return InternalVersion; } }
 #if DEV_BUILD_NOVA
         public static string SoftwareName = "SuperNova Core";

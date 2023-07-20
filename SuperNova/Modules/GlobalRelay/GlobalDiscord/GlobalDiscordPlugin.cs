@@ -25,7 +25,7 @@ namespace SuperNova.Modules.GlobalRelay.GlobalDiscord
 {
     public sealed class GlobalDiscordConfig 
     {
-        [ConfigBool("enabled", null, true)]
+        [ConfigBool("enabled", null, false)]
         public bool Enabled;
         [ConfigString("bot-token", null, "", true)]
         public string BotToken = "";

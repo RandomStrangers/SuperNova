@@ -73,7 +73,6 @@ namespace SuperNova.Gui
             LoadRelayProps();
             LoadRelayProps1();
             LoadRelayProps2();
-            LoadRelayProps3();
             LoadSqlProps();
             LoadEcoProps();
             LoadMiscProps();
@@ -89,7 +88,6 @@ namespace SuperNova.Gui
                 ApplyRelayProps();
                 ApplyRelayProps1();
                 ApplyRelayProps2();
-                ApplyRelayProps3();
                 ApplySqlProps();
                 ApplyEcoProps();
                 ApplyMiscProps();
@@ -106,7 +104,6 @@ namespace SuperNova.Gui
             SaveDiscordProps();
             SaveDiscordProps1();
             SaveDiscordProps2();
-            SaveDiscordProps3();
         }
 
         void btnSave_Click(object sender, EventArgs e) { SaveChanges(); Dispose(); }

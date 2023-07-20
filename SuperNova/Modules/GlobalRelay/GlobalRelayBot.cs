@@ -77,8 +77,8 @@ namespace SuperNova.Modules.GlobalRelay
         /// <summary> List of user IDs that all chat from is ignored </summary>
         public string[] IgnoredUsers;
         
-        readonly Player fakeGuest = new Player("RelayBot3");
-        readonly Player fakeStaff = new Player("RelayBot3");
+        readonly Player fakeGuest = new Player("GlobalRelayBot");
+        readonly Player fakeStaff = new Player("GlobalRelayBot");
         DateTime lastWho, lastOpWho;
 
         public bool canReconnect;

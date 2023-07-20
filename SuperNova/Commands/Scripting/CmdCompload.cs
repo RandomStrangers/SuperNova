@@ -15,39 +15,32 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-#if !DISABLE_COMPILING
-using SuperNova.Commands;
-using SuperNova.Scripting;
-
-namespace SuperNova.Modules.Compiling
-{
-    public sealed class CmdCompLoad : CmdCompile
-    {
+namespace SuperNova.Commands.Scripting {
+    public sealed class CmdCompLoad : Command2 {
         public override string name { get { return "CompLoad"; } }
         public override string shortcut { get { return "cml"; } }
         public override string type { get { return CommandTypes.Other; } }
-        public override CommandAlias[] Aliases { get { return null; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
+        public override bool MessageBlockRestricted { get { return true; } }
+        
+        public override void Use(Player p, string message, CommandData data) {
+            string[] args = message.SplitSpaces();
+            if (message.Length == 0) { Help(p); return; }
 
-        protected override void OnCommandCompiled(Player p, string name, string path)
-        {
-            ScriptingOperations.LoadCommands(p, path);
-            // TODO print command help directly
-            string cmd = name.SplitComma()[0];
-            Command.Find("Help").Use(p, cmd, p.DefaultCmdData);
+            if (args.Length == 1 || args[1].CaselessEq("vb")) {
+                Command.Find("Compile").Use(p, message, data);
+                Command.Find("CmdLoad").Use(p, args[0], data);
+                Command.Find("Help").Use(p, args[0], data);
+            } else { 
+                Help(p);
+            }
         }
-
-        protected override void OnPluginCompiled(Player p, string name, string path)
-        {
-            ScriptingOperations.LoadPlugins(p, path);
-        }
-
-        public override void Help(Player p)
-        {
+        
+        public override void Help(Player p) {
             p.Message("&T/CompLoad [command]");
             p.Message("&HCompiles and loads a C# command into the server for use.");
-            p.Message("&T/CompLoad plugin [plugin]");
-            p.Message("&HCompiles and loads a C# plugin into the server for use.");
-        }
+            p.Message("&T/CompLoad [command] vb");
+            p.Message("&HCompiles and loads a Visual basic command into the server for use.");
+        }        
     }
 }
-#endif

@@ -158,8 +158,8 @@ namespace SuperNova {
             EnsureDirectoryExists("extra/bots");
             EnsureDirectoryExists(Paths.ImportsDir);
             EnsureDirectoryExists("blockdefs");
-            EnsureDirectoryExists(IScripting.COMMANDS_DLL_DIR);
-            EnsureDirectoryExists(Modules.Compiling.ICompiler.COMMANDS_SOURCE_DIR); // TODO move to compiling module
+            EnsureDirectoryExists(IScripting.DllDir);
+            EnsureDirectoryExists(ICompiler.SourceDir);
             EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
             EnsureDirectoryExists("text/discord1"); // TODO move to discord plugin1
             EnsureDirectoryExists("text/discord2"); // TODO move to discord plugin2
@@ -226,8 +226,13 @@ namespace SuperNova {
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
-                        Command.Find("say").Use(Player.Console, "Goodbye Cruel World!");
+#if DEV_BUILD_NOVA                      
+            Command.Find("say").Use(Player.Nova, "Goodbye Cruel World!");
             Logger.Log(LogType.Warning, "&fGoodbye Cruel World!");
+#else
+            Logger.Log(LogType.Warning, "&fGoodbye Cruel World!");
+            Logger.Log(LogType.Warning, "&fGoodbye Cruel World!");
+#endif
             Server.shuttingDown = true;
             lock (stopLock) {
                 if (stopThread != null) return stopThread;
