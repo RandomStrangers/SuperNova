@@ -639,17 +639,6 @@
     <Compile Include="Modules\Compiling\CompilerOperations.cs" />
     <Compile Include="Modules\Moderation\Notes\CmdNotes.cs" />
     <Compile Include="Modules\Moderation\Notes\NotesPlugin.cs" />
-    <Compile Include="Modules\Relay3\BotControllersCmd3.cs" />
-    <Compile Include="Modules\Relay3\Discord3\DiscordApiClient3.cs" />
-    <Compile Include="Modules\Relay3\Discord3\DiscordBot3.cs" />
-    <Compile Include="Modules\Relay3\Discord3\DiscordPlugin3.cs" />
-    <Compile Include="Modules\Relay3\Discord3\DiscordWebsocket3.cs" />
-    <Compile Include="Modules\Relay3\IRC3\IRCBot3.cs" />
-    <Compile Include="Modules\Relay3\IRC3\IRCNickList3.cs" />
-    <Compile Include="Modules\Relay3\IRC3\IRCPlugin3.cs" />
-    <Compile Include="Modules\Relay3\RelayBot3.cs" />
-    <Compile Include="Modules\Relay3\RelayBotCmd3.cs" />
-    <Compile Include="Modules\Relay3\RelayBotSender3.cs" />
     <Compile Include="Modules\Relay2\BotControllersCmd2.cs" />
     <Compile Include="Modules\Relay2\Discord2\DiscordApiClient2.cs" />
     <Compile Include="Modules\Relay2\Discord2\DiscordBot2.cs" />
