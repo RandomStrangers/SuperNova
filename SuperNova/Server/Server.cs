@@ -163,7 +163,8 @@ namespace SuperNova {
             EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
             EnsureDirectoryExists("text/discord1"); // TODO move to discord plugin1
             EnsureDirectoryExists("text/discord2"); // TODO move to discord plugin2
-            EnsureDirectoryExists("globalchat/"); // TODO move to globalchat plugins
+            //EnsureDirectoryExists("globalchat/"); // TODO move to globalchat plugins
+            //Global Chat plugin is scrapped, leaving that here in case I decide to look back on it and fix it.
         }
         
         static void EnsureDirectoryExists(string dir) {
@@ -225,6 +226,8 @@ namespace SuperNova {
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
+                        Command.Find("say").Use(Player.Console, "Goodbye Cruel World!");
+            Logger.Log(LogType.Warning, "&fGoodbye Cruel World!");
             Server.shuttingDown = true;
             lock (stopLock) {
                 if (stopThread != null) return stopThread;
