@@ -256,13 +256,13 @@ namespace SuperNova.Modules.GlobalRelay
         public void LoadBannedCommands() {
             BannedCommands = new List<string>() { "GlobalIRCBot", "GlobalDiscordBot", "OpRules", "GlobalIRCControllers", "GlobalDiscordControllers" };
             
-            if (!File.Exists("text/globalirccmdblacklist.txt")) {
-                File.WriteAllLines("text/globalirccmdblacklist.txt", new string[] {
+            if (!File.Exists("globalchat/globalirccmdblacklist.txt")) {
+                File.WriteAllLines("globalchat/globalirccmdblacklist.txt", new string[] {
                                        "# Here you can put commands that cannot be used from the GlobalIRC bot.",
                                        "# Lines starting with \"#\" are ignored." });
             }
             
-            foreach (string line in File.ReadAllLines("text/globalirccmdblacklist.txt")) {
+            foreach (string line in File.ReadAllLines("globalchat/globalirccmdblacklist.txt")) {
                 if (!line.IsCommentLine()) BannedCommands.Add(line);
             }
         }

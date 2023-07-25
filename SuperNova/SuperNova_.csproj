@@ -429,6 +429,7 @@
     <Compile Include="CorePlugin\CorePlugin.cs" />
     <Compile Include="CorePlugin\ConnectHandler.cs" />
     <Compile Include="CorePlugin\EcoHandlers.cs" />
+    <Compile Include="CorePlugin\HelloWorldPlugin.cs" />
     <Compile Include="CorePlugin\MiscHandlers.cs" />
     <Compile Include="CorePlugin\ModActionHandler.cs" />
     <Compile Include="Database\Backends\SQLite.cs" />
@@ -764,6 +765,17 @@
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="Player\Player.CPE.cs" />
     <Compile Include="Database\PlayerDB.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalBotControllersCmd.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalDiscord\GlobalDiscordApiClient.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalDiscord\GlobalDiscordBot.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalDiscord\GlobalDiscordPlugin.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalDiscord\GlobalDiscordWebsocket.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalIRC\GlobalIRCBot.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalIRC\GlobalIRCNickList.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalIRC\GlobalIRCPlugin.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalRelayBot.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalRelayBotCmd.cs" />
+    <Compile Include="Modules\GlobalRelay\GlobalRelayBotSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

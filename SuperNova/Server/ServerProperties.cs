@@ -180,6 +180,15 @@ namespace SuperNova {
             w.WriteLine("#   irc-port2                      = The port to use to connect");
             w.WriteLine("#   irc-identify2                  = (true/false)    Do you want the IRC bot2 to Identify itself with nickserv2. Note: You will need to register it's name with nickserv2 manually.");
             w.WriteLine("#   irc-password2                  = The password you want to use if you're identifying with nickserv2");
+            //Global IRC settings
+            w.WriteLine("#   global-irc                     = Set to true to enable the Global IRC bot");
+            w.WriteLine("#   global-irc-nick                = The name of the Global IRC bot");
+            w.WriteLine("#   global-irc-server              = The server to connect to");
+            w.WriteLine("#   global-irc-channel             = The channel to join");
+            w.WriteLine("#   global-irc-opchannel           = The channel to join (posts OpChat)");
+            w.WriteLine("#   global-irc-port                = The port to use to connect");
+            w.WriteLine("#   global-irc-identify            = (true/false)    Do you want the Global IRC bot to Identify itself with nickserv. Note: You will need to register it's name with nickserv manually.");
+            w.WriteLine("#   global-irc-password            = The password you want to use if you're identifying with nickserv");
             w.WriteLine("#   anti-tunnels                  = Stops people digging below max-depth");
             w.WriteLine("#   max-depth                     = The maximum allowed depth to dig down");
             w.WriteLine("#   backup-time                   = The number of seconds between automatic backups");

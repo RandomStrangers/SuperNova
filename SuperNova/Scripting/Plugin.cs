@@ -25,6 +25,8 @@ using SuperNova.Modules.Relay1.Discord1;
 using SuperNova.Modules.Relay1.IRC1;
 using SuperNova.Modules.Relay2.Discord2;
 using SuperNova.Modules.Relay2.IRC2;
+using SuperNova.Modules.GlobalRelay.GlobalDiscord;
+using SuperNova.Modules.GlobalRelay.GlobalIRC;
 using SuperNova.Modules.Security;
 using SuperNova.Scripting;
 
@@ -118,6 +120,9 @@ namespace SuperNova
             LoadCorePlugin(new IRCPlugin1());
             LoadCorePlugin(new DiscordPlugin2());
             LoadCorePlugin(new IRCPlugin2());
+            LoadCorePlugin(new GlobalDiscordPlugin());
+            LoadCorePlugin(new GlobalIRCPlugin());
+            LoadCorePlugin(new HelloWorld());
             LoadCorePlugin(new IPThrottler());
             IScripting.AutoloadPlugins();
         }

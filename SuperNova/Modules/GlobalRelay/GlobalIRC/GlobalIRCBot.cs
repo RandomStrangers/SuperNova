@@ -38,7 +38,7 @@ namespace SuperNova.Modules.GlobalRelay.GlobalIRC
         public override string UserID { get { return conn == null ? null : conn.Nick; } }
         
         public override void LoadControllers() {
-            Controllers = PlayerList.Load("ranks/GlobalIRC_Controllers.txt");
+            Controllers = PlayerList.Load("globalchat/GlobalIRC_Controllers.txt");
         }
         
         public GlobalIRCBot() {

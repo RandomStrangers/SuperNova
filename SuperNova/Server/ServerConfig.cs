@@ -22,6 +22,7 @@ using SuperNova.Config;
 using SuperNova.Modules.Relay.IRC;
 using SuperNova.Modules.Relay1.IRC1;
 using SuperNova.Modules.Relay2.IRC2;
+using SuperNova.Modules.GlobalRelay.GlobalIRC;
 
 namespace SuperNova {
     public sealed class ServerConfig : EnvConfig {
@@ -390,5 +391,40 @@ namespace SuperNova {
         public TimeSpan IPSpamBlockTime = TimeSpan.FromSeconds(180);
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
+        // Global IRC settings
+        [ConfigBool("global-irc", "Global IRC bot", false)]
+        public bool UseGlobalIRC = false;
+        [ConfigInt("global-irc-port", "Global IRC bot", 6667, 0, 65535)]
+        public int GlobalIRCPort = 6667;
+        [ConfigString("global-irc-server", "Global IRC bot", "irc.esper.net")]
+        public string GlobalIRCServer = "irc.esper.net";
+        [ConfigString("global-irc-nick", "Global IRC bot", "GlobalIRCBot")]
+        public string GlobalIRCNick = "GlobalIRCBot";
+        [ConfigString("global-irc-channel", "Global IRC bot", "#ClassiCube_IRC", true)]
+        public string GlobalIRCChannels = "#changethis2";
+        [ConfigString("global-irc-opchannel", "Global IRC bot", "#ClassiCube_op_IRC", true)]
+        public string GlobalIRCOpChannels = "#ClassiCube_op_IRC";
+        [ConfigBool("global-irc-identify", "Global IRC bot", false)]
+        public bool GlobalIRCIdentify = false;
+        [ConfigString("global-irc-nickserv-name", "Global IRC bot", "NickServ", true)]
+        public string GlobalIRCNickServName = "NickServ";
+        [ConfigString("global-irc-password", "Global IRC bot", "", true)]
+        public string GlobalIRCPassword = "";
+        [ConfigBool("Global-irc-ssl", "Global IRC bot", false)]
+        public bool GlobalIRCSSL = false;
+        [ConfigString("global-irc-ignored-nicks", "Global IRC bot", "", true)]
+        public string GlobalIRCIgnored = "";
+        [ConfigBool("global-irc-player-titles", "Global IRC bot", true)]
+        public bool GlobalIRCShowPlayerTitles = true;
+        [ConfigBool("global-irc-show-world-changes", "Global IRC bot", false)]
+        public bool GlobaIRCShowWorldChanges = false;
+        [ConfigBool("global-irc-show-afk", "Global IRC bot", false)]
+        public bool GlobalIRCShowAFK = false;
+        [ConfigString("global-irc-command-prefix", "Global IRC bot", "?x", true)]
+        public string GlobalIRCCommandPrefix = "?x";
+        [ConfigEnum("global-irc-controller-verify", "Global IRC bot", GlobalIRCControllerVerify.HalfOp, typeof(GlobalIRCControllerVerify))]
+        public GlobalIRCControllerVerify GlobalIRCVerify = GlobalIRCControllerVerify.HalfOp;
+        [ConfigPerm("global-irc-controller-rank", "Global IRC bot", LevelPermission.Admin)]
+        public LevelPermission GlobalIRCControllerRank = LevelPermission.Admin;
     }
 }
