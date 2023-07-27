@@ -214,13 +214,9 @@ namespace SuperNova
 
         [ConfigPerm("PerBuild", "Permissions", LevelPermission.Guest)]
         public LevelPermission BuildMin = LevelPermission.Guest;
-#if DEV_BUILD_NOVA
-        [ConfigPerm("PerBuildMax", "Permissions", LevelPermission.Nova)]
-        public LevelPermission BuildMax = LevelPermission.Nova;
-#else
-        [ConfigPerm("PerBuildMax", "Permissions", LevelPermission.Console)]
-        public LevelPermission BuildMax = LevelPermission.Console;
-#endif
+
+        [ConfigPerm("PerBuildMax", "Permissions", LevelPermission.Nobody)]
+        public LevelPermission BuildMax = LevelPermission.Nobody;
         
         // Other blacklists/whitelists
         [ConfigStringList("BuildWhitelist", "Permissions")]
@@ -258,13 +254,9 @@ namespace SuperNova
         public string RealmOwner = "";
         [ConfigPerm("PerVisit", "Permissions", LevelPermission.Guest)]
         public LevelPermission VisitMin = LevelPermission.Guest;
-#if DEV_BUILD_NOVA
-        [ConfigPerm("PerVisitMax", "Permissions", LevelPermission.Nova)]
-        public LevelPermission VisitMax = LevelPermission.Nova;
-#else
-        [ConfigPerm("PerVisitMax", "Permissions", LevelPermission.Console)]
-        public LevelPermission VisitMax = LevelPermission.Console;
-#endif
+        [ConfigPerm("PerVisitMax", "Permissions", LevelPermission.Nobody)]
+        public LevelPermission VisitMax = LevelPermission.Nobody;
+
         
         // Other blacklists/whitelists
         [ConfigStringList("VisitWhitelist", "Permissions")]

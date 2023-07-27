@@ -165,6 +165,8 @@ namespace SuperNova.Commands.World {
             "&T/os map add [width] [height] [length] [theme]",
             "&H  See &T/Help newlvl themes &Hfor a list of map themes.",
             "&T/os map physics [level] &H- Sets the physics on your map.",
+            "&T/os map speed [number] &H- Sets the delay (in milliseconds) between physics ticks. " +
+            "E.g. a delay of 250 milliseconds means 4 ticks per second.",
             "&T/os map delete &H- Deletes your map",
             "&T/os map restore [num] &H- Restores backup [num] of your map",
             "&T/os map resize [width] [height] [length] &H- Resizes your map",

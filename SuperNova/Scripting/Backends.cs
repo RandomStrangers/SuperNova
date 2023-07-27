@@ -31,7 +31,7 @@ namespace SuperNova.Scripting
         public override string ShortName     { get { return "CS"; } }  
         public override string FullName      { get { return "CSharp"; } }        
 
-        protected override CodeDomProvider CreateProvider() {
+        public override CodeDomProvider CreateProvider() {
 #if NETSTANDARD
             return new CSharpCodeProvider();
 #else
@@ -39,7 +39,7 @@ namespace SuperNova.Scripting
 #endif
         }
         
-        protected override void PrepareArgs(CompilerParameters args) {
+        public override void PrepareArgs(CompilerParameters args) {
             args.CompilerOptions += " /unsafe";
         }
         
@@ -134,7 +134,7 @@ namespace SuperNova
         public override string ShortName     { get { return "VB"; } }
         public override string FullName      { get { return "Visual Basic"; } }
         
-        protected override CodeDomProvider CreateProvider() {
+        public override CodeDomProvider CreateProvider() {
 #if NETSTANDARD
             return new VBCodeProvider();
 #else
@@ -142,8 +142,8 @@ namespace SuperNova
 #endif
         }
         
-        protected override void PrepareArgs(CompilerParameters args) { }
-        protected override string CommentPrefix { get { return "'"; } }
+        public override void PrepareArgs(CompilerParameters args) { }
+        public override string CommentPrefix { get { return "'"; } }
         
         public override string CommandSkeleton {
             get {
