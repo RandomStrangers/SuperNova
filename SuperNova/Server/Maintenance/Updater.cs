@@ -31,7 +31,7 @@ namespace SuperNova {
         public const string BaseURL    = "https://github.com/RandomStrangers/SuperNova/blob/master/";
         public const string UploadsURL = "https://github.com/RandomStrangers/SuperNova/tree/master/Uploads";
         public const string UpdatesURL = "https://github.com/RandomStrangers/SuperNova/raw/master/Uploads/";
-        public static string WikiURL = "https://github.com/UnknownShadow200/MCGalaxy";
+        public static string WikiURL = "https://github.com/UnknownShadow200/SuperNova";
 
 
         const string CurrentVersionURL = BaseURL + "Uploads/current_version.txt";

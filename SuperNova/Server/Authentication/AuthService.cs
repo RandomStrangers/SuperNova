@@ -85,6 +85,7 @@ namespace SuperNova.Authentication
                 
                 Services.Add(auth);
                 Heartbeat.Register(beat);
+
             }
         }
         

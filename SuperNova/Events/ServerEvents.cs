@@ -35,7 +35,21 @@ namespace SuperNova.Events.ServerEvents {
             }
         }
     }
-
+    public delegate void OnConnectionReceived(Socket s, ref bool cancel, ref bool announce);
+    /// <summary> Called when a new connection has been received. </summary>
+    public sealed class OnConnectionReceivedEvent : IEvent<OnConnectionReceived>
+    {
+        public static void Call(Socket s, ref bool cancel, ref bool announce)
+        {
+            IEvent<OnConnectionReceived>[] items = handlers.Items;
+            // Can't use CallCommon because we need to pass arguments by ref
+            for (int i = 0; i < items.Length; i++)
+            {
+                try { items[i].method(s, ref cancel, ref announce); }
+                catch (Exception ex) { LogHandlerException(ex, items[i]); }
+            }
+        }
+    }
     public delegate void OnShuttingDown(bool restarting, string reason);
     /// <summary> Called when the server is shutting down or restarting. </summary>
     public sealed class OnShuttingDownEvent : IEvent<OnShuttingDown> {
@@ -56,19 +70,6 @@ namespace SuperNova.Events.ServerEvents {
         }
     }
     
-    public delegate void OnConnectionReceived(Socket s, ref bool cancel);
-    /// <summary> Called when a new connection has been received. </summary>
-    public sealed class OnConnectionReceivedEvent : IEvent<OnConnectionReceived> {
-        
-        public static void Call(Socket s, ref bool cancel) {
-            IEvent<OnConnectionReceived>[] items = handlers.Items;
-            // Can't use CallCommon because we need to pass arguments by ref
-            for (int i = 0; i < items.Length; i++) {
-                try { items[i].method(s, ref cancel); } 
-                catch (Exception ex) { LogHandlerException(ex, items[i]); }
-            }
-        }
-    }
     
     public delegate void OnChatSys(ChatScope scope, string msg, object arg,
                                    ref ChatMessageFilter filter, bool relay);
