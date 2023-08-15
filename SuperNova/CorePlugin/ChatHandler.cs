@@ -69,6 +69,41 @@ namespace SuperNova.Core {
                 
                 p.Extras["SN_RD"] = used + 1;
             }
+            if (!Server.Config.MCLawlSecretCommands) return;
+            if (cmd.ToLower() == "care")
+            {
+                p.cancelcommand = true;
+                int used = p.Extras.GetInt("SN_CARE");
+
+                if (used < 2)
+                {
+                    p.Message("Corneria now loves you with all his heart.");
+                    Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
+                }
+                else
+                {
+                    p.Message("You have used this command 2 times. You cannot use it anymore!");
+                }
+
+                p.Extras["SN_CARE"] = used + 1;
+            }
+            else if (cmd.ToLower() == "facepalm")
+            {
+                p.cancelcommand = true;
+                int used = p.Extras.GetInt("SN_FACEPALM");
+
+                if (used < 2)
+                {
+                    p.Message("Lawlcat's bot army just simultaneously facepalm'd at your use of this command.");
+                    Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
+                }
+                else
+                {
+                    p.Message("You have used this command 2 times. You cannot use it anymore!");
+                }
+
+                p.Extras["SN_FACEPALM"] = used + 1;
+            }
         }
     }
 }

@@ -98,25 +98,37 @@ namespace SuperNova.Network {
             wrapped.AuthenticateAsClient(host, null, TLS_ALL, false);
             return wrapped;
         }
-        
+
         /// <summary> Prefixes a URL by http:// if needed, and converts dropbox webpages to direct links. </summary>
-        public static void FilterURL(ref string url) {
+        public static void FilterURL(ref string url)
+        {
             if (!url.CaselessStarts("http://") && !url.CaselessStarts("https://"))
                 url = "http://" + url;
-            
+            const string DROPBOX_HTTP_PREFIX = "http://www.dropbox";
+            const string DROPBOX_HTTPS_PREFIX = "https://www.dropbox";
             // a lot of people try linking to the dropbox page instead of directly to file, so auto correct
-            if (url.CaselessStarts("http://www.dropbox")) {
-                url = "http://dl.dropbox" + url.Substring("http://www.dropbox".Length);
-                url = url.Replace("?dl=0", "");
-            } else if (url.CaselessStarts("https://www.dropbox")) {
-                url = "https://dl.dropbox" + url.Substring("https://www.dropbox".Length);
-                url = url.Replace("?dl=0", "");
+            if (url.CaselessStarts(DROPBOX_HTTP_PREFIX))
+            {
+                url = AdjustDropbox(url, DROPBOX_HTTP_PREFIX.Length);
             }
-            
-            url = url.Replace("dl.dropboxusercontent.com", "dl.dropbox.com");
+            else if (url.CaselessStarts(DROPBOX_HTTPS_PREFIX))
+            {
+                url = AdjustDropbox(url, DROPBOX_HTTPS_PREFIX.Length);
+
+                url = url.Replace("dl.dropboxusercontent.com", "dl.dropbox.com");
+            }
         }
-        
-        static bool CheckHttpOrHttps(Player p, string url) {
+            static string AdjustDropbox(string url, int prefixLen)
+            {
+                url = "https://dl.dropbox" + url.Substring(prefixLen);
+
+                return url
+                    .Replace("?dl=0", "")
+                    .Replace("&dl=0", "")
+                    .Replace("%dl=0", "");
+            }
+        /*
+            static bool CheckHttpOrHttps(Player p, string url) {
             Uri uri;
             // only check valid URLs here
             if (!url.Contains("://")) return true;
@@ -129,7 +141,21 @@ namespace SuperNova.Network {
                       "{0} is a {1}:// url", url, scheme);
             return false;
         }
-        
+        */
+        static bool CheckHttpOrHttps(Player p, string url)
+        {
+            Uri uri;
+            // only check valid URLs here
+            if (!url.Contains("://")) return true;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out uri)) return true;
+
+            string scheme = uri.Scheme;
+            if (scheme.CaselessEq("http") || scheme.CaselessEq("https")) return true;
+
+            p.Message("&WOnly http:// or https:// urls are supported, " +
+                      "{0} is a {1}:// url", url, scheme);
+            return false;
+        }
         /// <summary> Prefixes a URL by http:// if needed, and converts dropbox webpages to direct links. </summary>
         /// <remarks> Ensures URL is a valid http/https URI. </remarks>
         public static Uri GetUrl(Player p, ref string url) {
@@ -142,7 +168,7 @@ namespace SuperNova.Network {
             }
             return uri;
         }
-        
+        /*
         static string DescribeError(Exception ex) {
             try {
                 WebException webEx = (WebException)ex;
@@ -156,8 +182,30 @@ namespace SuperNova.Network {
             } catch {
                 return null;
             }
+        }*/
+
+        static string DescribeError(Exception ex)
+        {
+            try
+            {
+                WebException webEx = (WebException)ex;
+                // prefer explicit http status error codes if possible
+                try
+                {
+                    int status = (int)((HttpWebResponse)webEx.Response).StatusCode;
+                    return "(" + status + " error) from ";
+                }
+                catch
+                {
+                    return "(" + webEx.Status + ") from ";
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
-        
+
         public static byte[] DownloadData(string url, Player p) {
             Uri uri = GetUrl(p, ref url);
             if (uri == null) return null;

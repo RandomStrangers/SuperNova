@@ -171,6 +171,45 @@ namespace SuperNova
             return raw;
         }
 
+        public void SendCurrentTextures()
+        {
+            Zone zone = ZoneIn;
+            int cloudsHeight = CurrentEnvProp(EnvProp.CloudsLevel, zone);
+            int edgeHeight = CurrentEnvProp(EnvProp.EdgeLevel, zone);
+            int maxFogDist = CurrentEnvProp(EnvProp.MaxFog, zone);
+
+            byte side = (byte)CurrentEnvProp(EnvProp.SidesBlock, zone);
+            byte edge = (byte)CurrentEnvProp(EnvProp.EdgeBlock, zone);
+            string url = GetTextureUrl();
+
+            if (Supports(CpeExt.EnvMapAspect, 2))
+            {
+                // reset all other textures back to client default.
+                if (url != lastUrl) Send(Packet.EnvMapUrlV2("", hasCP437));
+                Send(Packet.EnvMapUrlV2(url, hasCP437));
+            }
+            else if (Supports(CpeExt.EnvMapAspect))
+            {
+                // reset all other textures back to client default.
+                if (url != lastUrl) Send(Packet.EnvMapUrl("", hasCP437));
+                Send(Packet.EnvMapUrl(url, hasCP437));
+            }
+            else if (Supports(CpeExt.EnvMapAppearance, 2))
+            {
+                // reset all other textures back to client default.
+                if (url != lastUrl)
+                {
+                    Send(Packet.MapAppearanceV2("", side, edge, edgeHeight, cloudsHeight, maxFogDist, hasCP437));
+                }
+                Send(Packet.MapAppearanceV2(url, side, edge, edgeHeight, cloudsHeight, maxFogDist, hasCP437));
+                lastUrl = url;
+            }
+            else if (Supports(CpeExt.EnvMapAppearance))
+            {
+                url = level.Config.Terrain.Length == 0 ? Server.Config.DefaultTerrain : level.Config.Terrain;
+                Send(Packet.MapAppearance(url, side, edge, edgeHeight, hasCP437));
+            }
+        }
         public void UpdateFallbackTable() {
             for (byte b = 0; b < Block.CPE_COUNT; b++)
             {

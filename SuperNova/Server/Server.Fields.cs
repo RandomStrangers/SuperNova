@@ -45,8 +45,8 @@ namespace SuperNova {
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
         
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.5.4.7";
-        public const string TrueInternalVersion = "1.0.1.7"; //True version of the software, since it started at 8.7.1.9.
+        public const string InternalVersion = "9.5.4.8";
+        public const string TrueInternalVersion = "1.0.1.8"; //True version of the software, since it started at 8.7.1.9.
         //Might finally convert the old numbering system to the proper one.
         public static string Version { get { return InternalVersion; } }
 #if DEV_BUILD_NOVA
@@ -64,7 +64,7 @@ namespace SuperNova {
         // URL for connecting to the server
         public static string URL = String.Empty;
         public static INetListen Listener = new TcpListen();
-        public static Scheduler Heartbeats = new Scheduler("MCG_HeartbeatsScheduler");
+        public static Scheduler Heartbeats = new Scheduler("SN_HeartbeatsScheduler");
 
         //Other
         public static bool SetupFinished, CLIMode;

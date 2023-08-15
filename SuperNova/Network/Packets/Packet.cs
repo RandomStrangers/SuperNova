@@ -174,7 +174,18 @@ namespace SuperNova.Network
             buffer[133] = mods;
             return buffer;
         }
-        
+        public static byte[] EnvMapUrlV2(string url, bool hasCP437)
+        {
+            byte[] buffer = new byte[129];
+            buffer[0] = Opcode.CpeSetMapEnvUrl;
+            NetUtils.Write(url, buffer, 1, hasCP437);
+
+            if (url.Length > NetUtils.StringSize)
+            {
+                NetUtils.Write(url.Substring(NetUtils.StringSize), buffer, 65, hasCP437);
+            }
+            return buffer;
+        }
         public static byte[] ExtAddEntity(byte entityID, string skin, string name, bool hasCP437) {
             byte[] buffer = new byte[130];
             buffer[0] = Opcode.CpeExtAddEntity;
