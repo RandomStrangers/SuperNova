@@ -47,11 +47,11 @@ namespace SuperNova.Core {
                 if (!MessageCmd.CanSpeak(p, cmd)) return;
                 int used = p.Extras.GetInt("SN_PONY");
                             
-                if (used < 2147483647) {
+                if (used < 2) {
                     Chat.MessageFrom(p, "λNICK &Sjust so happens to be a proud brony! Everyone give λNICK &Sa brohoof!");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 } else {
-                    p.Message("You have used this command 2147483647 times. You cannot use it anymore! Sorry, Brony!");
+                    p.Message("You have used this command 2 times. You cannot use it anymore! Sorry, Brony!");
                 }
                 
                 p.Extras["SN_PONY"] = used + 1;
@@ -60,11 +60,11 @@ namespace SuperNova.Core {
                 if (!MessageCmd.CanSpeak(p, cmd)) return;
                 int used = p.Extras.GetInt("SN_RD");
                 
-                if (used < 2147483647) {
+                if (used < 2) {
                     Chat.MessageGlobal("&4T&6H&eI&aS&3 S&9E&1R&4V&6E&eR &aJ&3U&9S&1T &4G&6O&eT &a2&30 &9P&1E&4R&6C&eE&aN&3T &9C&1O&4O&6L&eE&aR&3!");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 } else {
-                    p.Message("You have used this command 2147483647 times. You cannot use it anymore! Sorry, Brony!");
+                    p.Message("You have used this command 2 times. You cannot use it anymore! Sorry, Brony!");
                 }
                 
                 p.Extras["SN_RD"] = used + 1;
@@ -77,7 +77,8 @@ namespace SuperNova.Core {
 
                 if (used < 2)
                 {
-                    p.Message("Corneria now loves you with all his heart.");
+                    Chat.MessageFrom(p, "λNICK is now loved by Sparkie with all her heart. ^w^");
+                    p.Message("Sparkie now loves you with all her heart. ^w^");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 }
                 else
@@ -94,7 +95,7 @@ namespace SuperNova.Core {
 
                 if (used < 2)
                 {
-                    p.Message("Lawlcat's bot army just simultaneously facepalm'd at your use of this command.");
+                    p.Message("Seth's bot army just simultaneously facepalm'd at your use of this command.");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 }
                 else

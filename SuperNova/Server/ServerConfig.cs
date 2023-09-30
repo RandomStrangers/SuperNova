@@ -348,7 +348,7 @@ namespace SuperNova {
         public bool[] FileLogging = defLogLevels;
 
 #if DEV_BUILD_NOVA
-        [ConfigBoolArray("console-logging", "Logging", true, 17)]
+        [ConfigBoolArray("nova-logging", "Logging", true, 17)]
         public bool[] NovaLogging = defLogLevels;
 #else
         [ConfigBoolArray("console-logging", "Logging", true, 17)]

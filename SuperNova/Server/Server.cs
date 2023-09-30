@@ -184,7 +184,6 @@ namespace SuperNova {
                 if (Plugin.core.Contains(p)) continue;
                 Plugin.Unload(p, false);
             }
-            
             ZSGame.Instance.infectMessages = ZSConfig.LoadInfectMessages();
             Colors.Load();
             Alias.Load();
@@ -324,6 +323,13 @@ namespace SuperNova {
 
         static void ShutdownThread(bool restarting, string msg) {
             try {
+#if DEV_BUILD_NOVA
+            Command.Find("say").Use(Player.Nova, "Goodbye Cruel World!");
+            Logger.Log(LogType.SystemActivity, "&fGoodbye Cruel World!");
+#else
+                Command.Find("say").Use(Player.Console, "Goodbye Cruel World!");
+                Logger.Log(LogType.SystemActivity, "&fGoodbye Cruel World!");
+#endif
                 Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);
             } catch { }
             
@@ -342,13 +348,7 @@ namespace SuperNova {
                 INetSocket[] pending = INetSocket.pending.Items;
                 foreach (INetSocket p in pending) { p.Send(kick, SendFlags.None); }
             } catch (Exception ex) { Logger.LogError(ex); }
-#if DEV_BUILD_NOVA
-            Command.Find("say").Use(Player.Nova, "Goodbye Cruel World!");
-            Logger.Log(LogType.SystemActivity, "&fGoodbye Cruel World!");
-#else
-            Command.Find("say").Use(Player.Console, "Goodbye Cruel World!");
-            Logger.Log(LogType.SystemActivity, "&fGoodbye Cruel World!");
-#endif
+
             OnShuttingDownEvent.Call(restarting, msg);
             Plugin.UnloadAll();
 
