@@ -18,7 +18,9 @@ jobs:
           msbuild SuperNova.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_normal
           rm bin/Release/SuperNova_.dll bin/Release/SuperNova_.pdb
-          msbuild SuperNova/SuperNova_.csproj /p:Configuration=Release /p:DefineConstants="TEN_BIT_BLOCKS" /t:Rebuild /p:DefineConstants="DEV_BUILD_NOVA"
+          msbuild SuperNova/SuperNova_.csproj /p:Configuration=Release /p:DefineConstants="TEN_BIT_BLOCKS" /t:Rebuild /p:DefineConstants="TEN_BIT_BLOCKS,DEV_BUILD_NOVA"
+          msbuild GUI/SuperNovaGUI.csproj /p:Configuration=Release /t:Rebuild /p:DefineConstants="DEV_BUILD_NOVA"
+          msbuild CLI/SuperNovaCLI.csproj /p:Configuration=Release /t:Rebuild /p:DefineConstants="DEV_BUILD_NOVA"
 
       - uses: ./.github/actions/notify_failure
         if: ${{ always() && steps.compile.outcome == 'failure' }}
