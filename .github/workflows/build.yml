@@ -1,0 +1,43 @@
+name: Build latest
+on: [push]
+
+concurrency:
+  group: ${{ github.ref }}-latest
+  cancel-in-progress: true
+
+jobs:
+  build-mono:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Compile SuperNova using mono
+        shell: bash
+        id: compile
+        run: |
+          msbuild SuperNova.sln /p:Configuration=Release
+          cp -R bin/Release bin/Release_normal
+          rm bin/Release/SuperNova_.dll bin/Release/SuperNova_.pdb
+          msbuild SuperNova/SuperNova_.csproj /p:Configuration=Release /p:DefineConstants="TEN_BIT_BLOCKS" /t:Rebuild /p:DefineConstants="DEV_BUILD_NOVA"
+
+      - uses: ./.github/actions/notify_failure
+        if: ${{ always() && steps.compile.outcome == 'failure' }}
+        with:
+          NOTIFY_MESSAGE: 'Failed to compile SuperNova .NET build! <@999409543001931788>'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          
+      - uses: ./.github/actions/notify_success
+        if: ${{ always() && steps.compile.outcome == 'success' }}
+        with:
+          SOURCE_FILE: 'bin/Release_normal'
+          DEST_NAME: 'SuperNova'
+          NOTIFY_MESSAGE: 'Successfully compiled SuperNova .NET build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          
+      - uses: ./.github/actions/notify_success
+        if: ${{ always() && steps.compile.outcome == 'success' }}
+        with:
+          SOURCE_FILE: 'bin/Release'
+          DEST_NAME: 'SuperNova-Core'
+          NOTIFY_MESSAGE: 'Successfully compiled SuperNova .NET Core build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
