@@ -96,24 +96,16 @@ namespace SuperNova {
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
         public BlockID FastGetBlock(int index) {
             byte raw = blocks[index];
-            #if TEN_BIT_BLOCKS
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | GetExtTile(index));
-            #else
-            return raw != Block.custom_block ? raw : (BlockID)(Block.Extended | GetExtTile(index));
-            #endif
         }
         
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
         public BlockID FastGetBlock(ushort x, ushort y, ushort z) {
             byte raw = blocks[x + Width * (z + y * Length)];
-            #if TEN_BIT_BLOCKS
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
-            #else
-            return raw != Block.custom_block ? raw : (BlockID)(Block.Extended | FastGetExtTile(x, y, z));
-            #endif
         }
         
         /// <summary> Gets the block at the given coordinates </summary>
@@ -137,12 +129,8 @@ namespace SuperNova {
             index = x + Width * (z + y * Length);
             byte raw = blocks[index];
             
-            #if TEN_BIT_BLOCKS
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
-            #else
-            return raw != Block.custom_block ? raw : (BlockID)(Block.Extended | FastGetExtTile(x, y, z));
-            #endif
         }
         
         /// <summary> Gets whether the block at the given coordinates is air </summary>
@@ -218,11 +206,7 @@ namespace SuperNova {
             Changed = true;
             
             if (block >= Block.Extended) {
-                #if TEN_BIT_BLOCKS
                 blocks[index] = Block.ExtendedClass[block >> Block.ExtendedShift];
-                #else
-                blocks[index] = Block.custom_block;
-                #endif
                 FastSetExtTile(x, y, z, (BlockRaw)block);
             } else {
                 blocks[index] = (BlockRaw)block;
@@ -332,11 +316,7 @@ namespace SuperNova {
                 
                 errorLocation = "Setting tile";
                 if (block >= Block.Extended) {
-                    #if TEN_BIT_BLOCKS
                     SetTile(x, y, z, Block.ExtendedClass[block >> Block.ExtendedShift]);
-                    #else
-                    SetTile(x, y, z, Block.custom_block);
-                    #endif
                     FastSetExtTile(x, y, z, (BlockRaw)block);
                 } else {
                     SetTile(x, y, z, (BlockRaw)block);
@@ -383,12 +363,8 @@ namespace SuperNova {
                                          PhysicsArgs data = default(PhysicsArgs), bool addUndo = true) {
             if (blocks == null || b < 0 || b >= blocks.Length) return false;
             BlockID old = blocks[b];
-            #if TEN_BIT_BLOCKS
             BlockID extended = Block.ExtendedBase[old];
             if (extended > 0) old = (BlockID)(extended | GetExtTile(b));
-            #else
-            if (old == Block.custom_block) old = (BlockID)(Block.Extended | GetExtTile(b));
-            #endif
             
             try
             {
@@ -420,11 +396,7 @@ namespace SuperNova {
                 
                 Changed = true;
                 if (block >= Block.Extended) {
-                    #if TEN_BIT_BLOCKS
                     blocks[b] = Block.ExtendedClass[block >> Block.ExtendedShift];
-                    #else
-                    blocks[b] = Block.custom_block;
-                    #endif
                     ushort x, y, z;
                     IntToPos(b, out x, out y, out z);
                     FastSetExtTile(x, y, z, (BlockRaw)block);

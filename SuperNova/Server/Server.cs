@@ -184,6 +184,12 @@ namespace SuperNova {
                 if (Plugin.core.Contains(p)) continue;
                 Plugin.Unload(p, false);
             }
+            List<Plugin_Simple> simpleplugins = new List<Plugin_Simple>(Plugin_Simple.all);
+            foreach (Plugin_Simple ps in simpleplugins)
+            {
+                if (Plugin_Simple.core.Contains(ps)) continue;
+                Plugin_Simple.Unload(ps, false);
+            }
             ZSGame.Instance.infectMessages = ZSConfig.LoadInfectMessages();
             Colors.Load();
             Alias.Load();
@@ -217,7 +223,13 @@ namespace SuperNova {
                 if (Plugin.core.Contains(p)) continue;
                 Plugin.Load(p, false);
             }
-            
+            // Reload custom simple plugins
+            foreach (Plugin_Simple ps in simpleplugins)
+            {
+                if (Plugin_Simple.core.Contains(ps)) continue;
+                Plugin_Simple.Load(ps, false);
+            }
+
             OnConfigUpdatedEvent.Call();
         }
         
@@ -351,8 +363,9 @@ namespace SuperNova {
 
             OnShuttingDownEvent.Call(restarting, msg);
             Plugin.UnloadAll();
-
-            try {
+            Plugin_Simple.UnloadAll();
+            try
+            {
                 string autoload = null;
                 Level[] loaded = LevelInfo.Loaded.Items;
                 foreach (Level lvl in loaded) {

@@ -163,8 +163,8 @@ namespace SuperNova {
         public int IRCPort = 6667;
         [ConfigString("irc-server", "IRC bot", "irc.esper.net")]
         public string IRCServer = "irc.esper.net";
-        [ConfigString("irc-nick", "IRC bot", "ForgeBot")]
-        public string IRCNick = "ForgeBot";
+        [ConfigString("irc-nick", "IRC bot", "SuperNovaBot")]
+        public string IRCNick = "SuperNovaBot";
         [ConfigString("irc-channel", "IRC bot", "#changethis", true)]
         public string IRCChannels = "#changethis";
         [ConfigString("irc-opchannel", "IRC bot", "#changethistoo", true)]
@@ -186,8 +186,8 @@ namespace SuperNova {
         public int IRCPort1 = 6667;
         [ConfigString("irc-server1", "IRC bot1", "irc.esper.net")]
         public string IRCServer1 = "irc.esper.net";
-        [ConfigString("irc-nick1", "IRC bot1", "ForgeBot1")]
-        public string IRCNick1 = "ForgeBot1";
+        [ConfigString("irc-nick1", "IRC bot1", "SuperNovaBot1")]
+        public string IRCNick1 = "SuperNovaBot1";
         [ConfigString("irc-channel1", "IRC bot1", "#changethis1", true)]
         public string IRCChannels1 = "#changethis1";
         [ConfigString("irc-opchannel1", "IRC bot1", "#changethistoo1", true)]
@@ -209,8 +209,8 @@ namespace SuperNova {
         public int IRCPort2 = 6667;
         [ConfigString("irc-server2", "IRC bot2", "irc.esper.net")]
         public string IRCServer2 = "irc.esper.net";
-        [ConfigString("irc-nick2", "IRC bot2", "ForgeBot2")]
-        public string IRCNick2 = "ForgeBot2";
+        [ConfigString("irc-nick2", "IRC bot2", "SuperNovaBot2")]
+        public string IRCNick2 = "SuperNovaBot2";
         [ConfigString("irc-channel2", "IRC bot2", "#changethis2", true)]
         public string IRCChannels2 = "#changethis2";
         [ConfigString("irc-opchannel2", "IRC bot2", "#changethistoo2", true)]
@@ -422,8 +422,8 @@ namespace SuperNova {
         public bool GlobaIRCShowWorldChanges = false;
         [ConfigBool("global-irc-show-afk", "Global IRC bot", false)]
         public bool GlobalIRCShowAFK = false;
-        [ConfigString("global-irc-command-prefix", "Global IRC bot", "?x", true)]
-        public string GlobalIRCCommandPrefix = "?x";
+        [ConfigString("global-irc-command-prefix", "Global IRC bot", ",x", true)]
+        public string GlobalIRCCommandPrefix = ",x";
         [ConfigEnum("global-irc-controller-verify", "Global IRC bot", GlobalIRCControllerVerify.HalfOp, typeof(GlobalIRCControllerVerify))]
         public GlobalIRCControllerVerify GlobalIRCVerify = GlobalIRCControllerVerify.HalfOp;
         [ConfigPerm("global-irc-controller-rank", "Global IRC bot", LevelPermission.Admin)]

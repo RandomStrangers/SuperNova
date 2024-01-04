@@ -63,8 +63,8 @@ namespace SuperNova {
         /// <summary> Attempts to change the nickname of the target player </summary>
         /// <remarks> Not allowed when players who cannot speak (e.g. muted) </remarks>
         public static bool SetNick(Player p, string target, string nick) {
-            if (Colors.Strip(nick).Length >= 30) { 
-                p.Message("Nick must be under 30 letters."); 
+            if (Colors.Strip(nick).Length >= 64) { 
+                p.Message("Nick must be under 64 letters."); 
                 return false; 
             }
             Player who = PlayerInfo.FindExact(target);
@@ -89,8 +89,8 @@ namespace SuperNova {
         /// <summary> Attempts to change the title of the target player </summary>
         /// <remarks> Not allowed when players who cannot speak (e.g. muted) </remarks>
         public static bool SetTitle(Player p, string target, string title) {
-            if (title.Length >= 20) { 
-                p.Message("&WTitle must be under 20 characters."); 
+            if (title.Length >= 64) { 
+                p.Message("&WTitle must be under 64 characters."); 
                 return false;
             }
             Player who = PlayerInfo.FindExact(target);

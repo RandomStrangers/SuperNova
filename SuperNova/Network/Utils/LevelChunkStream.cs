@@ -135,10 +135,8 @@ namespace SuperNova.Network {
             // Store on stack instead of performing function call for every block in map
             byte* conv = stackalloc byte[Block.ExtendedCount];
             byte* convExt  = conv + Block.Count;
-            #if TEN_BIT_BLOCKS
             byte* convExt2 = conv + Block.Count * 2;
             byte* convExt3 = conv + Block.Count * 3;
-            #endif
 
             for (int j = 0; j < Block.ExtendedCount; j++) {
                 conv[j] = (byte)p.ConvertBlock((BlockID)j);
@@ -149,7 +147,6 @@ namespace SuperNova.Network {
             float progScale = 100.0f / blocks.Length;
             
             // compress the map data in 64 kb chunks
-            #if TEN_BIT_BLOCKS
             if (p.hasExtBlocks) {
                 // Initially assume all custom blocks are <= 255
                 int i;
@@ -235,39 +232,6 @@ namespace SuperNova.Network {
                     }
                 }
             }
-            #else
-            if (p.hasBlockDefs) {
-                for (int i = 0; i < blocks.Length; i++) {
-                    byte block = blocks[i];
-                    if (block == Block.custom_block) {
-                        buffer[bIndex] = lvl.GetExtTile(i);
-                    } else {
-                        buffer[bIndex] = conv[block];
-                    }
-                    
-                    bIndex++;
-                    if (bIndex == bufferSize) {
-                        dst.chunkValue = (byte)(i * progScale);
-                        stream.Write(buffer, 0, bufferSize); bIndex = 0;
-                    }
-                }
-            } else {
-                for (int i = 0; i < blocks.Length; i++) {
-                    byte block = blocks[i];
-                    if (block == Block.custom_block) {
-                        buffer[bIndex] = convExt[lvl.GetExtTile(i)];
-                    } else {
-                        buffer[bIndex] = conv[block];
-                    }
-                    
-                    bIndex++;
-                    if (bIndex == bufferSize) {
-                        dst.chunkValue = (byte)(i * progScale);
-                        stream.Write(buffer, 0, bufferSize); bIndex = 0;
-                    }
-                }
-            }
-            #endif
             
             if (bIndex > 0) stream.Write(buffer, 0, bIndex);
         }

@@ -94,7 +94,7 @@ namespace SuperNova {
         
         public static int YesVotes, NoVotes;
         public static bool voting;
-        public const int MAX_PLAYERS = 1024;
+        public const int MAX_PLAYERS = int.MaxValue;
         
         public static Scheduler MainScheduler = new Scheduler("SN_MainScheduler");
         public static Scheduler Background = new Scheduler("SN_BackgroundScheduler");

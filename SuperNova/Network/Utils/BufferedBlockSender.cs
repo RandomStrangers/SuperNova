@@ -91,7 +91,6 @@ namespace SuperNova.Network
         
         byte[] MakePacket(Player p, ref byte[] bulk, ref byte[] normal,
                           ref byte[] classic, ref byte[] ext, ref byte[] extBulk) {
-            #if TEN_BIT_BLOCKS
             if (p.hasExtBlocks) {
                 if (p.hasBulkBlockUpdate && count >= 150) {
                     if (extBulk == null) extBulk = MakeBulkExt();
@@ -101,7 +100,6 @@ namespace SuperNova.Network
                     return ext;
                 }
             }
-            #endif
             
             // Different clients support varying types of blocks
             if (p.hasBulkBlockUpdate && p.hasBlockDefs && count >= 160) {
@@ -122,7 +120,6 @@ namespace SuperNova.Network
             }
         }
 
-        #if TEN_BIT_BLOCKS
         byte[] MakeBulkExt() {
             byte[] data = new byte[2 + 256 * 5 + (256 / 4)];
             data[0] = Opcode.CpeBulkBlockUpdate;
@@ -170,7 +167,6 @@ namespace SuperNova.Network
             }
             return data;
         }
-        #endif
 
         
         byte[] MakeBulk() {
@@ -185,12 +181,9 @@ namespace SuperNova.Network
             }
             for (int i = 0, j = 2 + 256 * sizeof(int); i < count; i++) 
             {
-                #if TEN_BIT_BLOCKS
                 BlockID block = blocks[i];
                 data[j++] = block <= 511 ? (BlockRaw)block : level.GetFallback(block);
-                #else
-                data[j++] = (BlockRaw)blocks[i];
-                #endif
+
             }
             return data;
         }
@@ -208,12 +201,8 @@ namespace SuperNova.Network
                 data[j++] = (byte)(x >> 8); data[j++] = (byte)x;
                 data[j++] = (byte)(y >> 8); data[j++] = (byte)y;
                 data[j++] = (byte)(z >> 8); data[j++] = (byte)z;
-                #if TEN_BIT_BLOCKS
                 BlockID block = blocks[i];
                 data[j++] = block <= 511 ? (BlockRaw)block : level.GetFallback(block);
-                #else
-                data[j++] = (BlockRaw)blocks[i];
-                #endif
             }
             return data;
         }

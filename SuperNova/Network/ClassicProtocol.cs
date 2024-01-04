@@ -79,7 +79,6 @@ namespace SuperNova.Network
             }
         }
         
-        #if TEN_BIT_BLOCKS
         BlockID ReadBlock(byte[] buffer, int offset) {
             BlockID block;
             if (player.hasExtBlocks) {
@@ -91,9 +90,6 @@ namespace SuperNova.Network
             if (block > Block.MaxRaw) block = Block.MaxRaw;
             return Block.FromRaw(block);
         }
-        #else
-        BlockID ReadBlock(byte[] buffer, int offset) { return Block.FromRaw(buffer[offset]); }
-        #endif
 
         public void Disconnect() { player.Disconnect(); }
 
@@ -308,12 +304,10 @@ namespace SuperNova.Network
             } else if (ext.Name == CpeExt.ExtTextures) {
                 hasExtTexs = true;
             }
-            #if TEN_BIT_BLOCKS
             else if (ext.Name == CpeExt.ExtBlocks) {
                 p.hasExtBlocks = true;
                 if (p.MaxRawBlock < 767) p.MaxRawBlock = 767;
             }
-            #endif
         }
 #endregion
 
