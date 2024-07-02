@@ -45,8 +45,8 @@ namespace SuperNova {
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
         
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.5.5.0";
-        public const string TrueInternalVersion = "1.0.2.0"; //True version of the software, since it started at 8.7.1.9.
+        public const string InternalVersion = "9.5.5.1";
+        public const string TrueInternalVersion = "1.0.2.1"; //True version of the software, since it started at 8.7.1.9.
         //Might finally convert the old numbering system to the proper one.
         public static string Version { get { return InternalVersion; } }
 #if DEV_BUILD_NOVA
@@ -78,7 +78,10 @@ namespace SuperNova {
             "DarkBurningFlame", "BurningFlame", "SuperNova", "DeadNova",
             "HyperNova", "RandomStranger05", "GoldenSparks", "AurumStellae",
             "sethbatman05", "sethbatman2005", "jackstage1", "Pattykaki45",
-            "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae"};
+            "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae",
+            "HarmonyNetwork" , "krowteNynomraH", "UserTaken123", "UserNotFree",
+            "Onedez"
+        };
         public static readonly List<string> Opstats = new List<string>() { "ban", "tempban", "xban", "banip", "kick", "warn", "mute", "freeze", "setrank" };
 
         public static Level mainLevel;
