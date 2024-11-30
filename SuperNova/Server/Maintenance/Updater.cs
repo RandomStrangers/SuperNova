@@ -31,21 +31,18 @@ namespace SuperNova {
         public const string BaseURL    = "https://github.com/RandomStrangers/SuperNova/blob/master/";
         public const string UploadsURL = "https://github.com/RandomStrangers/SuperNova/tree/master/Uploads";
         public const string UpdatesURL = "https://github.com/RandomStrangers/SuperNova/raw/master/Uploads/";
-        public static string WikiURL = "https://github.com/UnknownShadow200/MCGalaxy";
+        public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
+        public const string FlamesURL = "https://github.com/RandomStrangers/Fire";
 
 
         const string CurrentVersionURL = BaseURL + "Uploads/current_version.txt";
 #if DEV_BUILD_NOVA
         const string dllURL = UpdatesURL + "SuperNova_Core.dll";
         const string guiURL = UpdatesURL + "SuperNova_CoreGUI.exe";
-        // const string changelogURL = BaseURL + "Changelog.txt";
-        // pointless since I don't really update the changelog...
         const string cliURL = UpdatesURL + "SuperNovaCLI_Core.exe";
 #else
         const string dllURL = UpdatesURL + "SuperNova_.dll";
         const string guiURL = UpdatesURL + "SuperNova.exe";
-       // const string changelogURL = BaseURL + "Changelog.txt";
-      // pointless since I don't really update the changelog...
         const string cliURL = UpdatesURL + "SuperNovaCLI.exe";
 #endif
 
@@ -92,8 +89,6 @@ namespace SuperNova {
                 client.DownloadFile(dllURL, "SuperNova_.update");
                 client.DownloadFile(guiURL, "SuperNova.update");
                 client.DownloadFile(cliURL, "SuperNovaCLI.update");
-                // client.DownloadFile(changelogURL, "Changelog.txt");
-                // pointless since I don't really update the changelog...
 
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels) {

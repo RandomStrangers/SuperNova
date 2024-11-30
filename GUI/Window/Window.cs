@@ -61,7 +61,7 @@ Trying to mix two versions is unsupported - you may experience issues";
                                        dll_version, AssemblyFile(typeof(Server), "SuperNova_.dll"));
             RunAsync(() => Popup.Warning(msg));
         }
-        
+
         static string AssemblyFile(Type type, string defPath) {
             try {
                 string path = type.Assembly.CodeBase;
@@ -96,7 +96,7 @@ Trying to mix two versions is unsupported - you may experience issues";
             main_Players.Font = new Font("Calibri", 8.25f);
             main_Maps.Font = new Font("Calibri", 8.25f);
         }
-        
+
         void LoadIcon() {
             // Normally this code would be in InitializeComponent method in Window.Designer.cs,
             //  however that doesn't work properly with some WINE versions (you get WINE icon instead)
@@ -128,8 +128,12 @@ Trying to mix two versions is unsupported - you may experience issues";
         void notifyIcon_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) icon_OpenConsole_Click(sender, e);
         }
-        
+        public static void WarnObsolete()
+        {
+            MessageBox.Show("Notice: SuperNova is obsolete, please use the Flames software instead. \n(See " + Updater.FlamesURL + ")", "Obsolete Software", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         void InitServer() {
+            RunOnUI_Async(WarnObsolete);
             Logger.LogHandler += LogMessage;
             Updater.NewerVersionDetected += OnNewerVersionDetected;
 

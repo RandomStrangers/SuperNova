@@ -71,8 +71,8 @@ namespace SuperNova.Gui
             LoadGeneralProps();
             LoadChatProps();
             LoadRelayProps();
-            LoadRelayProps1();
-            LoadRelayProps2();
+            //LoadRelayProps1();
+            //LoadRelayProps2();
             LoadSqlProps();
             LoadEcoProps();
             LoadMiscProps();
@@ -86,8 +86,8 @@ namespace SuperNova.Gui
                 ApplyGeneralProps();
                 ApplyChatProps();
                 ApplyRelayProps();
-                ApplyRelayProps1();
-                ApplyRelayProps2();
+                //ApplyRelayProps1();
+                //ApplyRelayProps2();
                 ApplySqlProps();
                 ApplyEcoProps();
                 ApplyMiscProps();
@@ -102,8 +102,8 @@ namespace SuperNova.Gui
                 Logger.Log(LogType.Warning, "SAVE FAILED! properties/server.properties");
             }
             SaveDiscordProps();
-            SaveDiscordProps1();
-            SaveDiscordProps2();
+            //SaveDiscordProps1();
+            //SaveDiscordProps2();
         }
 
         void btnSave_Click(object sender, EventArgs e) { SaveChanges(); Dispose(); }

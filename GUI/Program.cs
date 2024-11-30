@@ -29,6 +29,7 @@ namespace SuperNova.Gui
     {   
         [STAThread]
         public static void Main(string[] args) {
+
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             
             if (!File.Exists("SuperNova_.dll")) {

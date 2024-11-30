@@ -27,7 +27,6 @@ namespace SuperNova.Cli {
         [STAThread]
         public static void Main(string[] args) {
             SetCurrentDirectory();
-
             // If SuperNova_.dll is missing, a FileNotFoundException will get thrown for SuperNova dll
             try {
                 EnableCLIMode();
@@ -74,7 +73,7 @@ namespace SuperNova.Cli {
             try {
                 Logger.LogHandler += LogMessage;
                 Updater.NewerVersionDetected += LogNewerVersionDetected;
-                
+                WarnObsolete();
                 EnableCLIMode();
                 Server.Start();
                 Console.Title = Server.Config.Name + " - " + Server.SoftwareNameVersioned;
@@ -173,7 +172,11 @@ namespace SuperNova.Cli {
         static void LogNewerVersionDetected(object sender, EventArgs e) {
             Write("&cSuperNova update available! Update by replacing with the files from " + Updater.UploadsURL);
         }
-        
+        public static void WarnObsolete()
+        {
+            Write("&eNotice: SuperNova is obsolete, please use the Flames software instead.");
+            Write("&e(See " + Updater.FlamesURL + ")");
+        }
         static void ConsoleLoop() {
             int eofs = 0;
             while (true) {

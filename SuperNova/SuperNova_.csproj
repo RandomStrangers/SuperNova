@@ -682,7 +682,6 @@
     <Compile Include="Network\Player.Networking.cs" />
     <Compile Include="Scripting\Backends.cs" />
     <Compile Include="Server\Authentication\Authenticator.cs" />
-    <Compile Include="Server\Authentication\AuthService.cs" />
     <Compile Include="Scripting\Plugin.cs" />
     <Compile Include="Scripting\Scripting.cs" />
     <Compile Include="Player\Ban.cs" />

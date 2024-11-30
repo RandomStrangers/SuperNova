@@ -134,7 +134,7 @@ namespace SuperNova.Gui {
         }
 
         void dis_lnkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            GuiUtils.OpenBrowser(Updater.SourceURL + "/wiki/Discord-relay-bot/");
+            GuiUtils.OpenBrowser(Updater.WikiURL + "Discord-relay-bot/");
         }
     }
 }

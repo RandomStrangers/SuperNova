@@ -36,7 +36,7 @@ namespace SuperNova.Gui
         public static void Warning(string message) {
             MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        
+
         public static bool OKCancel(string message, string title) {
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel,
                                   MessageBoxIcon.Warning) == DialogResult.OK;
